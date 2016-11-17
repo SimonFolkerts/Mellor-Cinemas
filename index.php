@@ -2,15 +2,28 @@
 
 final class Index {
     
+    //load the following classes into the scope
+    public function loadClass($name) {
+        $classes = array(
+            'Dao' => 'dao/Dao.php',
+            'UserDao' => 'dao/UserDao.php'
+        );
+        if (!array_key_exists($name, $classes)) {
+            die('Class "' . $name . '" not found.');
+        }
+        require_once $classes[$name];
+    }
+    
     //constants
-    const PAGE_DIRECTORY = '../page';
+    const PAGE_DIRECTORY = 'page';
 
-    //start session
+    //start session and initiate class loading
     public function init() {
         session_start();
+        spl_autoload_register(array($this, 'loadClass'));
     }
 
-    //functio to check if there is a page key in the GET, 
+    //function to check if there is a page key in the GET, 
     //if yes then set the $page variable to the keys value in the GET.
     private function getPage() {
         if (array_key_exists('page', $_GET)) {
@@ -28,14 +41,13 @@ final class Index {
     private function assemblePage($page) {
         $view = $this->getView($page);
         require $this->getController($page);
-        require 'index-view.php';
+        require 'layout/index-view.php';
     }
     
     //assemble the page using assemblePage, with the page determined by getPage
     public function run() {
         $this->assemblePage($this->getPage());
     }
-    
     
     //MVC assemblers will return the correct page components.
     //e.g. page-controller/home-controller.php
@@ -47,6 +59,6 @@ final class Index {
         return self::PAGE_DIRECTORY . '-view/' . $page . '-view.php';
     }
 }
- $index = new Index();
- $index->init();
- $index->run();
+$index = new Index();
+$index->init();
+$index->run();
