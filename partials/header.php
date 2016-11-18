@@ -13,6 +13,7 @@
                 <!--if user is set, display logged in interface, else display log in option-->
                 <?php if (isset($_SESSION['username'])) { ?>
                     <p>Hello "<?php echo $_SESSION['username'] ?>"</p>
+                    <a href="http://localhost/MellorCinemas/index.php?page=account">Account</a>
                     <li><a href="http://localhost/MellorCinemas/index.php?page=login&logout=true">Log Out</a></li>
                 <?php } else { ?>
                     <li><a href="http://localhost/MellorCinemas/index.php?page=login">Log In/Sign Up</a></li>

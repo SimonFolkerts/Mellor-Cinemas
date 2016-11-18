@@ -6,7 +6,10 @@ final class Index {
     public function loadClass($name) {
         $classes = array(
             'Dao' => 'dao/Dao.php',
-            'UserDao' => 'dao/UserDao.php'
+            'UserDao' => 'dao/UserDao.php',
+            'User' => 'classes/User.php',
+            'UserMapper' => 'mapping/UserMapper.php',
+            'UserValidator' => 'validation/UserValidator.php'
         );
         if (!array_key_exists($name, $classes)) {
             die('Class "' . $name . '" not found.');

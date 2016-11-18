@@ -1,6 +1,7 @@
 <?php
 
 $errors = '';
+$edit = array_key_exists('id', $_GET);
 if (isset($_GET['logout'])) {
     session_unset();
     session_destroy();
@@ -30,17 +31,30 @@ if (isset($_POST['submit'])) {
 //then map the supplied credentials to the object
 if (isset($_GET['create'])) {
     $user = new User();
+    $userId = null;
+    $user->setId($userId);
     $user->setUserName('');
     $user->setPassword('');
     $user->setEmail('');
-    echo 'user class created'; //TODO remove echo
 
     $data = array(
-    'username' => $_POST['username'],
-    'password' => $_POST['password'],
-    'email' => $_POST['email']
+        'username' => $_POST['username'],
+        'password' => $_POST['password'],
+        'email' => $_POST['email']
     );
-    
+
     UserMapper::map($user, $data);
+
+    $errors = UserValidator::validate($user);
+    var_dump($errors);
+    //TODO ensure unique entries
+    //TODO add functionality for updating existing user
+
+    if (empty($errors)) {
+        $dao = new UserDao();
+        $user = $dao->save($user);
+        $_SESSION['username'] = $user->getUserName();
+        header('Location: index.php');
+    }
 }
 ?>
