@@ -6,10 +6,12 @@
     <div>
         <input type="submit" name="submit" value="submit">
     </div>
-    <?php echo $_POST['username']; ?><br>
-     <?php if($errors){ ?>
-        <div class="errors">
-            <p><?php echo $errors; ?></p>
-        </div>
-    <?php } ?>
 </form>
+<form id="signup-form" method="post" action="index.php?page=login&create=true">
+    <input type="submit" name="create" value="create">
+</form>
+<?php if ($errors) { ?>
+    <div class="errors">
+        <p><?php echo $errors; ?></p>
+    </div>
+<?php } ?>
