@@ -1,6 +1,6 @@
 <?php
 
-$errors = '';
+$errors = array();
 $edit = array_key_exists('id', $_GET);
 if (isset($_GET['logout'])) {
     session_unset();
@@ -23,38 +23,47 @@ if (isset($_POST['submit'])) {
         $_SESSION['username'] = $username;
         header('Location: index.php');
     } else {
-        $errors = 'NAH WRONG!';
+        $errors[] = 'NAH WRONG!';
     }
 }
 
 //if create is set in the get, create a new empty User object, and 
 //then map the supplied credentials to the object
+
 if (isset($_GET['create'])) {
-    $user = new User();
-    $userId = null;
-    $user->setId($userId);
-    $user->setUserName('');
-    $user->setPassword('');
-    $user->setEmail('');
-
-    $data = array(
-        'username' => $_POST['username'],
-        'password' => $_POST['password'],
-        'email' => $_POST['email']
-    );
-
-    UserMapper::map($user, $data);
-
-    $errors = UserValidator::validate($user);
-    var_dump($errors);
-    //TODO ensure unique entries
-    //TODO add functionality for updating existing user
-
-    if (empty($errors)) {
+    if ($edit) {
         $dao = new UserDao();
-        $user = $dao->save($user);
-        $_SESSION['username'] = $user->getUserName();
-        header('Location: index.php');
+        $user = Utilities::getObjByGetId($dao);
+    } else {
+        // set defaults
+        $user = new User();
+        $userId = null;
+        $user->setId($userId);
+        $user->setUserName('');
+        $user->setPassword('');
+        $user->setEmail('');
+    }
+
+    if (array_key_exists('save', $_POST)) {
+
+        $data = array(
+            'username' => $_POST['username'],
+            'password' => $_POST['password'],
+            'email' => $_POST['email']
+        );
+
+        UserMapper::map($user, $data);
+
+        $errors = UserValidator::validate($user);
+        //TODO ensure unique entries
+        //TODO add functionality for updating existing user
+
+        if (empty($errors)) {
+            $dao = new UserDao();
+            $user = $dao->save($user);
+            $_SESSION['username'] = $user->getUserName();
+            header('Location: index.php');
+        }
     }
 }
 ?>

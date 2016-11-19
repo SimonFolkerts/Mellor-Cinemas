@@ -44,7 +44,7 @@
 /**
  * Miscellaneous utility methods.
  */
-final class Utils {
+final class Utilities {
 
     private function __construct() {
     }

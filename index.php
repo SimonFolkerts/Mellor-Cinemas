@@ -9,7 +9,8 @@ final class Index {
             'UserDao' => 'dao/UserDao.php',
             'User' => 'classes/User.php',
             'UserMapper' => 'mapping/UserMapper.php',
-            'UserValidator' => 'validation/UserValidator.php'
+            'UserValidator' => 'validation/UserValidator.php',
+            'Utilities' => 'utilities/Utilities.php'
         );
         if (!array_key_exists($name, $classes)) {
             die('Class "' . $name . '" not found.');

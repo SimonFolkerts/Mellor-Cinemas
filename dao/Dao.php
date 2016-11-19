@@ -18,7 +18,7 @@ class Dao {
         }
         //otherwise attempt to establish a connection using supplied parameters
         try {
-            $this->db = new PDO($dsn, $username, $password);
+            $this->db = new PDO($dsn, $username, $password, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
         } catch (Exception $ex) {
             throw new Exception('database connection error');
         }
