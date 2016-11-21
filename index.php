@@ -6,6 +6,9 @@ final class Index {
     public function loadClass($name) {
         $classes = array(
             'Dao' => 'dao/Dao.php',
+            'ShowingDao' => 'dao/ShowingDao.php',
+            'Showing' => 'classes/Showing.php',
+            'ShowingMapper' => 'mapping/ShowingMapper.php',
             'UserDao' => 'dao/UserDao.php',
             'User' => 'classes/User.php',
             'UserMapper' => 'mapping/UserMapper.php',

@@ -2,11 +2,11 @@
 
 class User {
 
-    private $id;
-    private $userName;
-    private $password;
-    private $email;
-    private $status;
+    private $id,
+            $userName,
+            $password,
+            $email,
+            $status;
 
     function getId() {
         return $this->id;

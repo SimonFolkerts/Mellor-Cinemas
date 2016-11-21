@@ -8,8 +8,7 @@
         <nav>
             <p>This is the Header</p>
             <ul>
-                <li><a href="http://localhost/MellorCinemas/index.php?page=home">Home</a></li>
-                <li><a href="http://localhost/MellorCinemas/index.php?page=movies">Movies</a></li>
+                <li><a href="http://localhost/MellorCinemas/index.php?page=home">Movies</a></li>
                 <!--if user is set, display logged in interface, else display log in option-->
                 <?php if (isset($_SESSION['username'])) { ?>
                     <p>Hello "<?php echo $_SESSION['username'] ?>"</p>
