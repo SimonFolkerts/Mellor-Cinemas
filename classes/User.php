@@ -6,6 +6,7 @@ class User {
     private $userName;
     private $password;
     private $email;
+    private $status;
 
     function getId() {
         return $this->id;
@@ -22,6 +23,10 @@ class User {
     function getEmail() {
         return $this->email;
     }
+    
+    function getStatus() {
+        return $this->status;
+    }
 
     function setId($id) {
         $this->id = $id;
@@ -37,6 +42,10 @@ class User {
 
     function setEmail($email) {
         $this->email = $email;
+    }
+    
+    function setStatus($status) {
+        $this->status = $status;
     }
 
 }

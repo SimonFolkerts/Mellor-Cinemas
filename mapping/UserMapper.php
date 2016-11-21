@@ -15,6 +15,9 @@ class UserMapper {
         if (array_key_exists('email', $data)) {
             $user->setEmail($data['email']);
         }
+        if (array_key_exists('status', $data)) {
+            $user->setStatus($data['status']);
+        }
     }
 
 }
