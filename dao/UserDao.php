@@ -11,7 +11,7 @@ class UserDao extends Dao {
     }
 
     public function find($sql) {
-        $row = $this->query($sql)->fetch();
+        $row = $this->getRow($sql);
         $user = new User();
         UserMapper::map($user, $row);
         $result = $user;
@@ -28,10 +28,6 @@ class UserDao extends Dao {
         return $user;
     }
 
-    private function query($sql) {
-        $statement = $this->getDb()->query($sql, PDO::FETCH_ASSOC);
-        return $statement;
-    }
 
     //----------- CRUD FUNCTIONALITY ----------//
 

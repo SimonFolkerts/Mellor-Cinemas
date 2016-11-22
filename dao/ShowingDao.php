@@ -1,16 +1,10 @@
 <?php
 
+
 class ShowingDao extends Dao {
-    
-    //---------- DATA RETRIEVAL ----------//
-    
-//   public static function getAllShowings() {
-//       $statement = $db->query('SELECT');
-//       $row = $statement->fetch(PDO::FETCH_ASSOC);
-//   }
-   
-     public function find($sql) {
-        $row = $this->query($sql)->fetch();
+
+    public function find($sql) {
+        $row = $this->getRow($sql);
         $showing = new Showing();
         ShowingMapper::map($showing, $row);
         $result = $showing;
@@ -19,16 +13,12 @@ class ShowingDao extends Dao {
     
     public function findAll($sql) {
         $result = array();
-        foreach ($this->query($sql) as $row) {
+        $rows = $this->getRows($sql);
+        foreach ($rows as $row) {
             $showing = new Showing();
             ShowingMapper::map($showing, $row);
             $result[$showing->getId()] = $showing;
         }
         return $result;
-    }
-    
-    private function query($sql) {
-        $statement = $this->getDb()->query($sql, PDO::FETCH_ASSOC);
-        return $statement;
     }
 }

@@ -1,6 +1,6 @@
 <div>
-    <?php foreach ($showings as $showing): ?>
-    <a href="index.php?page=movie&id=<?php echo $showing->getId(); ?>"><img src="web/img/image-uploads/<?php echo $showing->getPoster(); ?>"></a>
+    <?php foreach ($movies as $movie): ?>
+    <a href="index.php?page=movie&id=<?php echo $movie->getId(); ?>"><img title="<?php echo $movie->getTitle(); ?>" src="web/img/image-uploads/<?php echo $movie->getPoster(); ?>"></a>
     <?php endforeach ?>
 </div>
 <p>--------------</p>

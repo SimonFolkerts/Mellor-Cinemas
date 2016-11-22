@@ -1,10 +1,9 @@
 <?php
 
+
 class Showing {
     private $id,
-            $poster,
-            $movieTitle,
-            $movieSynopsis,
+            $movieId,
             $date,
             $startTime,
             $endTime,
@@ -15,16 +14,8 @@ class Showing {
         return $this->id;
     }
 
-    public function getPoster() {
-        return $this->poster;
-    }
-
-    public function getMovieTitle() {
-        return $this->movieTitle;
-    }
-
-    public function getMovieSynopsis() {
-        return $this->movieSynopsis;
+    public function getMovieId() {
+        return $this->movieId;
     }
 
     public function getDate() {
@@ -51,16 +42,8 @@ class Showing {
         $this->id = $id;
     }
 
-    public function setPoster($poster) {
-        $this->poster = $poster;
-    }
-
-    public function setMovieTitle($movieTitle) {
-        $this->movieTitle = $movieTitle;
-    }
-
-    public function setMovieSynopsis($movieSynopsis) {
-        $this->movieSynopsis = $movieSynopsis;
+    public function setMovieId($movieId) {
+        $this->movieId = $movieId;
     }
 
     public function setDate($date) {
@@ -82,5 +65,8 @@ class Showing {
     public function setStatus($status) {
         $this->status = $status;
     }
+
+
+
 
 }

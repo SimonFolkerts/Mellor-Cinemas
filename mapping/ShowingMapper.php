@@ -3,19 +3,14 @@
 class ShowingMapper {
 
     public static function map(Showing $showing, array $data) {
+
         if (array_key_exists('id', $data)) {
             $showing->setId($data['id']);
         }
-        if (array_key_exists('poster', $data)) {
-            $showing->setPoster($data['poster']);
+        if (array_key_exists('movie_id', $data)) {
+            $showing->setMovieId($data['movie_id']);
         }
-        if (array_key_exists('movie_title', $data)) {
-            $showing->setMovieTitle($data['movie_title']);
-        }
-        if (array_key_exists('movie_synopsis', $data)) {
-            $showing->setMovieSynopsis($data['movie_synopsis']);
-        }
-         if (array_key_exists('date', $data)) {
+        if (array_key_exists('date', $data)) {
             $showing->setDate($data['date']);
         }
         if (array_key_exists('start_time', $data)) {

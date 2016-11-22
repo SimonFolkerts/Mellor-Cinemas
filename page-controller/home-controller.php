@@ -1,9 +1,8 @@
 <?php 
 
-$dao = new ShowingDao();
+$dao = new MovieDao();
 
-$sql = 'SELECT * FROM showings WHERE status != "deleted"';
-$showings = $dao->findAll($sql);
-
+$sql = 'SELECT * FROM movies WHERE status != "deleted"';
+$movies = $dao->findAll($sql);
 
 

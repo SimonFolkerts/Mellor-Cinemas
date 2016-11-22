@@ -1,12 +1,19 @@
 <?php
 
+$dao = new MovieDao();
+
+$sql = 'SELECT id, poster, movie_title, movie_synopsis FROM movies WHERE id = ' . $_GET['id'];
+$movie = $dao->find($sql);
+
+$movieId = $movie->getId();
+$moviePoster = $movie->getPoster();
+$movieTitle = $movie->getTitle();
+$movieSynopsis = $movie->getSynopsis();
+
 $dao = new ShowingDao();
 
-$sql = 'SELECT poster, movie_title, movie_synopsis FROM showings WHERE id = ' . $_GET['id'];
-$showing = $dao->find($sql);
+$sql = 'SELECT * FROM showings WHERE status != "deleted" AND movie_id = ' . $_GET['id'];
+$showings = $dao->findAll($sql);
 
-$moviePoster = $showing->getPoster();
-$movieTitle = $showing->getMovieTitle();
-$movieSynopsis = $showing->getMovieSynopsis();
 
 ?>
