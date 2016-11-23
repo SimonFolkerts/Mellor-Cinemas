@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
     //TODO find out about inheritance and variable scope. 
     //if supplied credentials match with what was requested from the database, login
     if ($username === $user['username'] && $password === $user['password']) {
-        $_SESSION['username'] = $username;
+        $_SESSION['user'] = $user;
         header('Location: index.php');
     } else {
         $errors[] = 'NAH WRONG!';
@@ -61,7 +61,7 @@ if (isset($_GET['create'])) {
         if (empty($errors)) {
             $dao = new UserDao();
             $user = $dao->save($user);
-            $_SESSION['username'] = $user->getUserName();
+            $_SESSION['user'] = $user;
             header('Location: index.php');
         }
     }

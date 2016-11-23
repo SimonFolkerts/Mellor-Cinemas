@@ -1,7 +1,7 @@
 <?php
 
 final class Index {
-    
+
     //load the following classes into the scope
     public function loadClass($name) {
         $classes = array(
@@ -15,6 +15,9 @@ final class Index {
             'SeatDao' => 'dao/SeatDao.php',
             'Seat' => 'classes/Seat.php',
             'SeatMapper' => 'mapping/SeatMapper.php',
+            'BookingsSeatsDao' => 'dao/BookingsSeatsDao.php',
+            'BookingsSeats' => 'classes/BookingsSeats.php',
+            'BookingsSeatsMapper' => 'mapping/BookingsSeatsMapper.php',
             'UserDao' => 'dao/UserDao.php',
             'User' => 'classes/User.php',
             'UserMapper' => 'mapping/UserMapper.php',
@@ -26,7 +29,7 @@ final class Index {
         }
         require_once $classes[$name];
     }
-    
+
     //constants
     const PAGE_DIRECTORY = 'page';
 
@@ -56,12 +59,12 @@ final class Index {
         require $this->getController($page);
         require 'layout/index-view.php';
     }
-    
+
     //assemble the page using assemblePage, with the page determined by getPage
     public function run() {
         $this->assemblePage($this->getPage());
     }
-    
+
     //MVC assemblers will return the correct page components.
     //e.g. page-controller/home-controller.php
     private function getController($page) {
@@ -71,7 +74,9 @@ final class Index {
     private function getView($page) {
         return self::PAGE_DIRECTORY . '-view/' . $page . '-view.php';
     }
+
 }
+
 $index = new Index();
 $index->init();
 $index->run();

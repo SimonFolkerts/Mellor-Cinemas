@@ -5,7 +5,7 @@ class Booking {
     private $id,
             $showingId,
             $userId,
-            $bookingStatus;
+            $status;
     
     public function getId() {
         return $this->id;
@@ -19,8 +19,8 @@ class Booking {
         return $this->userId;
     }
 
-    public function getBookingStatus() {
-        return $this->bookingStatus;
+    public function getStatus() {
+        return $this->status;
     }
 
     public function setId($id) {
@@ -35,8 +35,8 @@ class Booking {
         $this->userId = $userId;
     }
 
-    public function setBookingStatus($bookingStatus) {
-        $this->bookingStatus = $bookingStatus;
+    public function setStatus($status) {
+        $this->status = $status;
     }
 
 

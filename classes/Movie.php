@@ -4,7 +4,8 @@ class Movie {
     private $id,
             $poster,
             $title,
-            $synopsis;
+            $synopsis,
+            $status;
     
     public function getId() {
         return $this->id;
@@ -21,6 +22,10 @@ class Movie {
     public function getSynopsis() {
         return $this->synopsis;
     }
+        
+    function getStatus() {
+        return $this->status;
+    }
 
     public function setId($id) {
         $this->id = $id;
@@ -36,6 +41,10 @@ class Movie {
 
     public function setSynopsis($synopsis) {
         $this->synopsis = $synopsis;
+    }
+
+    function setStatus($status) {
+        $this->status = $status;
     }
 
 }

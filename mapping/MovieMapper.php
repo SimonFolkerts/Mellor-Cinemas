@@ -15,6 +15,9 @@ class MovieMapper {
         if (array_key_exists('movie_synopsis', $data)) {
             $movie->setSynopsis($data['movie_synopsis']);
         }
+         if (array_key_exists('status', $data)) {
+            $movie->setStatus($data['status']);
+        }
     }
 
 }

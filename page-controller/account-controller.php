@@ -1,7 +1,7 @@
 <?php
 $dao = new UserDao();
 
-$sql = "SELECT id FROM users WHERE username = '" . $_SESSION['username'] . "'";
+$sql = "SELECT id FROM users WHERE username = '" . $_SESSION['user']['username'] . "'";
 $user = $dao->find($sql);
 
 if (array_key_exists('delete', $_GET)) {
