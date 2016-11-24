@@ -63,20 +63,43 @@ function generateGrid($seats) {
 $grid = generateGrid($allSeats);
 
 //TODO FINISH  SEAT UPLOAD
+//---------- CREATE BOOKING ----------//
 
 if (array_key_exists('seat', $_POST)) {
-    $booking = new BookingDao();
+    $booking = new Booking();
     $bookingId = null;
     $booking->setId($bookingId);
-    $booking->setShowingId($showingId);
+    $booking->setShowingId('');
+    $booking->setUserId('');
+    $booking->setStatus('');
+    
     if (array_key_exists('user', $_SESSION)) {
-        $booking->setUserId($_SESSION['user']['id']);
+        $booking->getUserId($_SESSION['user']['id']);
     } else {
         $booking->setUserId(null);
     }
-    $booking->setStatus('active');
 
-    foreach ($_POST as $seat) {
-        $sql = 'INSERT INTO bookings_seats (id, booking_id, seat_id) VALUES :id, :booking_id, :seat_id';
-    }
+    $data = array(
+        'showingId' => $showingId,
+        'userId' => (array_key_exists('user', $_SESSION) ? $_SESSION['user']['id'] : null)
+    );
+    //TODO cleanup here and add validation to submission
+
+    BookingMapper::map($booking, $data);
+
+    $dao = new BookingDao();
+    $booking = $dao->save($booking);
+    
+
+    //---------- CREATE BOOKING <-> SEAT JUNCTION ----------//
+
+    $dao = new BookingsSeatsDao();
+    
+    $seats = $_POST['seat'];
+    
+    $id = (int) $booking->getID();
+    
+    $dao->save($id, $seats);
+    
+    header('Location: index.php');    
 }

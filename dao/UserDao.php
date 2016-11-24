@@ -5,7 +5,7 @@ class UserDao extends Dao {
     //---------- DATA RETRIEVEAL ----------//
 
     public function getUserDetails($username, $password, $db) {
-        $statement = $db->query('SELECT username, password FROM users WHERE username = "' . $username . '" AND password = "' . $password . '" AND status = "active"');
+        $statement = $db->query('SELECT id, username, password, status FROM users WHERE username = "' . $username . '" AND password = "' . $password . '" AND status = "active"');
         $row = $statement->fetch(PDO::FETCH_ASSOC);
         return $row;
     }

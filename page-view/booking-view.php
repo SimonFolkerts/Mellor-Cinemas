@@ -15,7 +15,7 @@
 </div>
 <h4>Step Two: Select Seats</h4>
 <div>
-    <form method="post" action="index.php?page=booking&id=<?php echo $showingId ?>">
+    <form method="post" action="index.php?page=booking&id=<?php echo $showingId ?>&save=true">
         <?php echo $grid ?>
         <input type="submit" value="Submit">
     </form>

@@ -1,11 +1,26 @@
 <?php
 
-
 class BookingsSeatsDao extends Dao {
-    
-    
-    
-     //---------- PREPARED STATEMENT EXECUTIONS ----------//
+
+//----------- CRUD FUNCITONALITY ------------//
+//---------- PREPARED STATEMENT EXECUTIONS ----------//
+    public function save($id, $seats) {
+        $db = $this->getDb();
+        // begin the transaction
+        $db->beginTransaction();
+
+        foreach ($seats as $seat) {
+            $db->exec("INSERT INTO bookings_seats (booking_id, seat_id) VALUES ('" . $id . "', '" . $seat . "')");
+        }
+
+
+        // commit the transaction
+        $db->commit();
+        echo "New records created successfully";
+
+
+        $db = null;
+    }
 
     private function execute($sql, BookingsSeats $bookingsSeats) {
         $statement = $this->getDb()->prepare($sql);
@@ -20,19 +35,8 @@ class BookingsSeatsDao extends Dao {
     }
 
     private static function throwDbError(array $errorInfo) {
-        // TODO log error, send email, etc.
+// TODO log error, send email, etc.
         throw new Exception('DB error [' . $errorInfo[0] . ', ' . $errorInfo[1] . ']: ' . $errorInfo[2]);
     }
 
-    private function getParams(BookingsSeats $bookingsSeats) {
-        $params = array(
-            ':id' => $bookingsSeats->getId(),
-            ':booking_id' => $bookingsSeats->getBookingId(),
-            ':seat_id' => $bookingsSeats->getSeatId(),
-            ':id' => $bookingsSeats->getId(),
-            ':status' => $bookingsSeats->getStatus()
-        );
-        return $params;
-    }
-    
 }
