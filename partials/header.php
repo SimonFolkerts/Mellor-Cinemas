@@ -10,8 +10,8 @@
             <ul>
                 <li><a href="http://localhost/MellorCinemas/index.php?page=home">Movies</a></li>
                 <!--if user is set, display logged in interface, else display log in option-->
-                <?php if (isset($_SESSION['user']['username'])) { ?>
-                    <p>Hello "<?php echo $_SESSION['user']['username'] ?>"</p>
+                <?php if (isset($_SESSION['username'])) { ?>
+                    <p>Hello "<?php echo $_SESSION['username'] ?>"</p>
                     <a href="http://localhost/MellorCinemas/index.php?page=account">Account</a>
                     <li><a href="http://localhost/MellorCinemas/index.php?page=login&logout=true">Log Out</a></li>
                 <?php } else { ?>

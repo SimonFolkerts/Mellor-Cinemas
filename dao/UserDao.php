@@ -1,13 +1,19 @@
 <?php
 
 class UserDao extends Dao {
-    
+
     //---------- DATA RETRIEVEAL ----------//
 
     public function getUserDetails($username, $password, $db) {
         $statement = $db->query('SELECT id, username, password, status FROM users WHERE username = "' . $username . '" AND password = "' . $password . '" AND status = "active"');
         $row = $statement->fetch(PDO::FETCH_ASSOC);
-        return $row;
+        if ($row) {
+        $user = new User();
+        UserMapper::map($user, $row);
+        return $user;
+        } else {
+            return null;
+        }
     }
 
     public function find($sql) {
@@ -28,9 +34,7 @@ class UserDao extends Dao {
         return $user;
     }
 
-
     //----------- CRUD FUNCTIONALITY ----------//
-
     //if the user object has no id, insert the user into the database
     //else update pre-existing user
     public function save(User $user) {
@@ -73,7 +77,7 @@ class UserDao extends Dao {
         ));
         return $statement->rowCount() == 1;
     }
-    
+
     //---------- PREPARED STATEMENT EXECUTIONS ----------//
 
     private function execute($sql, User $user) {

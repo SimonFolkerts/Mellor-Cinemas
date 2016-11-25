@@ -17,11 +17,16 @@ if (isset($_POST['submit'])) {
 
     //ask the database for user with the supplied credentials
     $user = $dao->getUserDetails($username, $password, $db);
-    //TODO find out about inheritance and variable scope. 
+
     //if supplied credentials match with what was requested from the database, login
-    if ($username === $user['username'] && $password === $user['password']) {
-        $_SESSION['user'] = $user;
-        header('Location: index.php');
+    if ($user == !null) {
+        if ($username === $user->getUserName() && $password === $user->getPassword()) {
+            $_SESSION['username'] = $user->getUserName();
+            $_SESSION['id'] = $user->getId();
+            header('Location: index.php');
+        } else {
+            $errors[] = 'NAH WRONG!';
+        }
     } else {
         $errors[] = 'NAH WRONG!';
     }
@@ -60,8 +65,10 @@ if (isset($_GET['create'])) {
 
         if (empty($errors)) {
             $dao = new UserDao();
-            $user = $dao->save($user);
-            $_SESSION['user'] = $user;
+            $dao->save($user);
+            $user = $dao->getUserDetails($user->getUserName(), $user->getPassword(), $dao->getDb());
+            $_SESSION['username'] = $user->getUserName();
+            $_SESSION['id'] = $user->getId();
             header('Location: index.php');
         }
     }

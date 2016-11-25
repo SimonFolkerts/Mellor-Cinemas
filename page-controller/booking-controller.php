@@ -73,15 +73,15 @@ if (array_key_exists('seat', $_POST)) {
     $booking->setUserId('');
     $booking->setStatus('');
     
-    if (array_key_exists('user', $_SESSION)) {
-        $booking->getUserId($_SESSION['user']['id']);
+    if (array_key_exists('username', $_SESSION)) {
+        $booking->getUserId($_SESSION['id']);
     } else {
         $booking->setUserId(null);
     }
 
     $data = array(
         'showingId' => $showingId,
-        'userId' => (array_key_exists('user', $_SESSION) ? $_SESSION['user']['id'] : null)
+        'userId' => (array_key_exists('id', $_SESSION) ? $_SESSION['id'] : null)
     );
     //TODO cleanup here and add validation to submission
 
