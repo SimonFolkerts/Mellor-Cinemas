@@ -4,7 +4,7 @@
         Password: <input type="text" name="password"><br>
     </div>
     <div>
-        <input type="submit" name="submit" value="submit">
+        <button type="submit" name="submit" value="submit">Log In</button>
     </div>
 </form>
 <form id="signup-form" method="post" action="index.php?page=login&create=true<?php echo $_GET['id'] ? '&id=' . $_GET['id'] : '';?>">

@@ -2,6 +2,8 @@
 
 class User {
 
+    //SERVER-SIDE PROPERTIES
+    
     private $id,
             $userName,
             $password,
@@ -23,7 +25,7 @@ class User {
     function getEmail() {
         return $this->email;
     }
-    
+
     function getStatus() {
         return $this->status;
     }
@@ -43,9 +45,21 @@ class User {
     function setEmail($email) {
         $this->email = $email;
     }
-    
+
     function setStatus($status) {
         $this->status = $status;
+    }
+
+    //CLIENT-SIDE PROPERTIES
+    
+    private $bookingCount;
+   
+    function getBookingCount() {
+        return $this->bookingCount;
+    }
+
+    function setBookingCount($bookingCount) {
+        $this->bookingCount = $bookingCount;
     }
 
 }

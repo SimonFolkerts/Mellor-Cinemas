@@ -14,6 +14,10 @@ class BookingsSeatsMapper {
         if (array_key_exists('seat_id', $data)) {
             $bookingsSeats->setSeatId($data['seat_id']);
         }
+        
+        if (array_key_exists('status', $data)) {
+            $bookingsSeats->setStatus($data['status']);
+        }
     }
 
 }

@@ -4,7 +4,8 @@
 class BookingsSeats {
     private $id,
             $bookingId,
-            $seatId;
+            $seatId,
+            $status;
     
     function getId() {
         return $this->id;
@@ -16,6 +17,10 @@ class BookingsSeats {
 
     function getSeatId() {
         return $this->seatId;
+    }
+        
+    function getStatus() {
+        return $this->status;
     }
 
     function setId($id) {
@@ -30,4 +35,8 @@ class BookingsSeats {
         $this->seatId = $seatId;
     }
 
+    function setStatus($status) {
+        $this->status = $status;
+    }
+    
 }

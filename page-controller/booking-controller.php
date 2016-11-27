@@ -4,7 +4,7 @@
 
 $dao = new Dao();
 
-$showingSql = 'SELECT movies.id AS id_movie, movie_title, poster, movie_synopsis, movies.status AS status_movie, showings.id AS id_showing, movie_id, date, start_time, end_time, cinema, showings.status AS status_showing FROM movies, showings WHERE movies.id = showings.movie_id AND showings.id = ' . $_GET['id'];
+$showingSql = "SELECT movies.id AS id_movie, movie_title, poster, movie_synopsis, movies.status AS status_movie, showings.id AS id_showing, movie_id, date, start_time, end_time, cinema, showings.status AS status_showing FROM movies, showings WHERE movies.id = showings.movie_id AND showings.id = '" . $_GET['id'] . "' AND movies.status != 'deleted' AND showings.status != 'deleted'";
 $showingResults = $dao->getRow($showingSql);
 
 //TODO clean up here
@@ -23,10 +23,10 @@ $cinema = $showingResults['cinema'];
 
 $dao = new SeatDao();
 
-$allSeatsSql = 'SELECT seats.id, cinema_row, cinema_column FROM seats WHERE cinema = ' . $cinema . ' ORDER BY cinema_row, cinema_column';
-$reservedSeatsSql = 'SELECT seats.id, cinema_row, cinema_column FROM seats, bookings_seats, showings, bookings WHERE bookings_seats.seat_id = seats.id AND bookings_seats.booking_id = bookings.id AND bookings.showing_id = ' . $showingId . ' ORDER BY cinema_row, cinema_column';
-
+$allSeatsSql = "SELECT seats.id, cinema_row, cinema_column FROM seats WHERE cinema = '" . $cinema . "' ORDER BY cinema_row ASC, cinema_column ASC";
+$reservedSeatsSql = "SELECT seats.id, cinema_row, cinema_column FROM seats, bookings_seats, showings, bookings WHERE bookings_seats.seat_id = seats.id AND bookings_seats.booking_id = bookings.id AND bookings.showing_id = '" . $showingId . "' AND bookings.booking_status != 'deleted' ORDER BY cinema_row ASC, cinema_column ASC";
 $allSeats = $dao->findAll($allSeatsSql);
+
 $reservedSeats = $dao->findAll($reservedSeatsSql);
 
 if ($reservedSeats) {

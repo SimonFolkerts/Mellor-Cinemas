@@ -13,7 +13,7 @@ class BookingDao extends Dao {
         return $result;
     }
     
-    //---------- SAVE FUNCTIONALITY ----------//
+    //---------- CRUD FUNCTIONALITY ----------//
     
     public function save(Booking $booking) {
         $booking->setId(null);
@@ -23,6 +23,23 @@ class BookingDao extends Dao {
                 VALUES (:id, :showingId, :userId, :status)';
         return $this->execute($sql, $booking);
     }
+    
+    
+     public function delete($id) {
+        $sql = '
+            UPDATE bookings, bookings_seats SET
+                bookings.booking_status = :status,
+                bookings_seats.status = :status
+            WHERE
+                bookings.id = :id AND bookings_seats.booking_id = bookings.id';
+        $statement = $this->getDb()->prepare($sql);
+        $this->executeStatement($statement, array(
+            ':status' => 'deleted',
+            ':id' => $id,
+        ));
+        return $statement->rowCount() == 1;
+    }
+
 
     //---------- PREPARED STATEMENT EXECUTIONS ----------//
     

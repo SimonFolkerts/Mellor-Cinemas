@@ -23,7 +23,11 @@ if (isset($_POST['submit'])) {
         if ($username === $user->getUserName() && $password === $user->getPassword()) {
             $_SESSION['username'] = $user->getUserName();
             $_SESSION['id'] = $user->getId();
-            header('Location: index.php');
+            if ($user->getStatus() === 'admin') {
+                header('Location: index.php?page=administrator-interface');
+            } else {
+                header('Location: index.php');
+            }
         } else {
             $errors[] = 'NAH WRONG!';
         }

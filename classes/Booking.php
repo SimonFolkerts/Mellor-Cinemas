@@ -2,6 +2,9 @@
 
 
 class Booking {
+    
+    //SERVER-SIDE PROPERTIES 
+    
     private $id,
             $showingId,
             $userId,
@@ -38,6 +41,38 @@ class Booking {
     public function setStatus($status) {
         $this->status = $status;
     }
+
+    
+    //CLIENT-SIDE PROPERTIES
+    
+    private $showing,
+            $user,
+            $seats;
+    
+    function getShowing() {
+        return $this->showing;
+    }
+
+    function getUser() {
+        return $this->user;
+    }
+
+    function getSeats() {
+        return $this->seats;
+    }
+
+    function setShowing($showing) {
+        $this->showing = $showing;
+    }
+
+    function setUser($user) {
+        $this->user = $user;
+    }
+
+    function setSeats($seats) {
+        $this->seats = $seats;
+    }
+
 
 
 }

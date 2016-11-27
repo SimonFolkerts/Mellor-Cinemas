@@ -18,6 +18,7 @@ class UserMapper {
         if (array_key_exists('status', $data)) {
             $user->setStatus($data['status']);
         }
+        
     }
 
 }
