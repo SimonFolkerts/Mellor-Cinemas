@@ -2,6 +2,7 @@
 
 //----------SHOWING DETAILS----------
 
+//get the information relevant tot he selected movie
 $dao = new Dao();
 
 $showingSql = "SELECT movies.id AS id_movie, movie_title, poster, movie_synopsis, movies.status AS status_movie, showings.id AS id_showing, movie_id, date, start_time, end_time, cinema, showings.status AS status_showing FROM movies, showings WHERE movies.id = showings.movie_id AND showings.id = '" . $_GET['id'] . "' AND movies.status != 'deleted' AND showings.status != 'deleted'";
@@ -19,16 +20,21 @@ $sessionTime = $showingResults['start_time'] . " - " . $showingResults['end_time
 $cinema = $showingResults['cinema'];
 
 
-//-----------GRID GENERATION---------
+//-----------GRID GENERATION---------//
 
 $dao = new SeatDao();
 
+//return all seats in the cinema specified by the showing
 $allSeatsSql = "SELECT seats.id, cinema_row, cinema_column FROM seats WHERE cinema = '" . $cinema . "' ORDER BY cinema_row ASC, cinema_column ASC";
-$reservedSeatsSql = "SELECT seats.id, cinema_row, cinema_column FROM seats, bookings_seats, showings, bookings WHERE bookings_seats.seat_id = seats.id AND bookings_seats.booking_id = bookings.id AND bookings.showing_id = '" . $showingId . "' AND bookings.booking_status != 'deleted' ORDER BY cinema_row ASC, cinema_column ASC";
-$allSeats = $dao->findAll($allSeatsSql);
 
+//return all seats that are not available
+$reservedSeatsSql = "SELECT seats.id, cinema_row, cinema_column FROM seats, bookings_seats, showings, bookings WHERE bookings_seats.seat_id = seats.id AND bookings_seats.booking_id = bookings.id AND bookings.showing_id = '" . $showingId . "' AND bookings.booking_status != 'deleted' ORDER BY cinema_row ASC, cinema_column ASC";
+
+//execute queries
+$allSeats = $dao->findAll($allSeatsSql);
 $reservedSeats = $dao->findAll($reservedSeatsSql);
 
+//if non available seats exist, set the status of them to disabled (for use in their html for greying out)
 if ($reservedSeats) {
     foreach ($allSeats as $seat) {
         foreach ($reservedSeats as $reservedSeat) {
@@ -39,15 +45,20 @@ if ($reservedSeats) {
     }
 }
 
+
+//empty array
 $output = '';
 
 function generateGrid($seats) {
     $output = '';
     $row = 1;
+    
+    //get the maximum dimension of the grid
     end($seats);
     $lastSeat = $seats[key($seats)];
     $rowCount = $lastSeat->getCinemaRow();
 
+    //generate the theatre grid row by row, stopping at the last row.
     while ($row <= $rowCount) {
         foreach ($seats as $seat) {
             if ($seat->getCinemaRow() == $row) {
@@ -62,9 +73,9 @@ function generateGrid($seats) {
 
 $grid = generateGrid($allSeats);
 
-//TODO FINISH  SEAT UPLOAD
 //---------- CREATE BOOKING ----------//
 
+//if seats have been selected, generate empty booking object
 if (array_key_exists('seat', $_POST)) {
     $booking = new Booking();
     $bookingId = null;
@@ -73,12 +84,14 @@ if (array_key_exists('seat', $_POST)) {
     $booking->setUserId('');
     $booking->setStatus('');
     
+    //if a user is logged in, assign the booking to the user
     if (array_key_exists('username', $_SESSION)) {
         $booking->getUserId($_SESSION['id']);
     } else {
         $booking->setUserId(null);
     }
 
+    //add the showing id and the user id, if extant, to the object
     $data = array(
         'showingId' => $showingId,
         'userId' => (array_key_exists('id', $_SESSION) ? $_SESSION['id'] : null)
@@ -86,20 +99,15 @@ if (array_key_exists('seat', $_POST)) {
     //TODO cleanup here and add validation to submission
 
     BookingMapper::map($booking, $data);
-
     $dao = new BookingDao();
     $booking = $dao->save($booking);
     
 
     //---------- CREATE BOOKING <-> SEAT JUNCTION ----------//
-
+    
     $dao = new BookingsSeatsDao();
-    
     $seats = $_POST['seat'];
-    
     $id = (int) $booking->getID();
-    
     $dao->save($id, $seats);
-    
     header('Location: index.php');    
 }

@@ -2,11 +2,16 @@
 
 $errors = array();
 $edit = array_key_exists('id', $_GET);
+
+//---------- LOG OUT ----------//
+
 if (isset($_GET['logout'])) {
     session_unset();
     session_destroy();
     header('Location: index.php');
 }
+
+//---------- LOG IN ----------//
 
 if (isset($_POST['submit'])) {
     $dao = new UserDao();
@@ -36,15 +41,18 @@ if (isset($_POST['submit'])) {
     }
 }
 
+//---------- CREATE ACCOUNT ----------//
+
 //if create is set in the get, create a new empty User object, and 
 //then map the supplied credentials to the object
 
 if (isset($_GET['create'])) {
     if ($edit) {
+        //if a pre-existing user is specified, retrieve that user object vie the id in the GET
         $dao = new UserDao();
         $user = Utilities::getObjByGetId($dao);
     } else {
-        // set defaults
+        //otherwise create new empty object
         $user = new User();
         $userId = null;
         $user->setId($userId);
@@ -55,6 +63,7 @@ if (isset($_GET['create'])) {
 
     if (array_key_exists('save', $_POST)) {
 
+        //add supplied information to the object
         $data = array(
             'username' => $_POST['username'],
             'password' => $_POST['password'],
@@ -71,6 +80,7 @@ if (isset($_GET['create'])) {
             $dao = new UserDao();
             $dao->save($user);
             $user = $dao->getUserDetails($user->getUserName(), $user->getPassword(), $dao->getDb());
+            //log the user into the session
             $_SESSION['username'] = $user->getUserName();
             $_SESSION['id'] = $user->getId();
             header('Location: index.php');

@@ -4,18 +4,20 @@ class UserDao extends Dao {
 
     //---------- DATA RETRIEVEAL ----------//
 
+    //return a row based on the supplied information, and map it to an object. If nothing is returned, return null
     public function getUserDetails($username, $password, $db) {
         $statement = $db->query('SELECT id, username, password, status FROM users WHERE username = "' . $username . '" AND password = "' . $password . '" AND status != "deleted"');
         $row = $statement->fetch(PDO::FETCH_ASSOC);
         if ($row) {
-        $user = new User();
-        UserMapper::map($user, $row);
-        return $user;
+            $user = new User();
+            UserMapper::map($user, $row);
+            return $user;
         } else {
             return null;
         }
     }
 
+    //return a single row based on an SQL query, and map it to an object
     public function find($sql) {
         $row = $this->getRow($sql);
         $user = new User();
@@ -24,6 +26,7 @@ class UserDao extends Dao {
         return $result;
     }
 
+    //return a multiple rows based on an SQL query, mapping each one to an object which is then appended to an array. The array is then returned
     public function findById($id) {
         $row = $this->query("SELECT * FROM users WHERE id = " . (int) $id . " AND status = 'active'")->fetch();
         if (!$row) {
@@ -35,8 +38,8 @@ class UserDao extends Dao {
     }
 
     //----------- CRUD FUNCTIONALITY ----------//
-    //if the user object has no id, insert the user into the database
-    //else update pre-existing user
+
+    //if the object has no id, insert it into the database, else update pre-existing entry
     public function save(User $user) {
         if ($user->getId() === null) {
             return $this->insert($user);
@@ -44,6 +47,7 @@ class UserDao extends Dao {
         return $this->update($user);
     }
 
+    //insert new entry into database using prepared statement
     private function insert(User $user) {
         $user->setId(null);
         $user->setStatus('active');
@@ -53,6 +57,7 @@ class UserDao extends Dao {
         return $this->execute($sql, $user);
     }
 
+    //update existing entry in the datapase using prepared statemnt
     private function update(User $user) {
         $sql = 'UPDATE users SET
                 username = :username,
@@ -64,6 +69,7 @@ class UserDao extends Dao {
         return $this->execute($sql, $user);
     }
 
+    //set the status of the database entry to 'deleted' usin a prepared statement
     public function delete($id) {
         $sql = '
             UPDATE users SET

@@ -1,20 +1,20 @@
 <?php
 
-
 class BookingDao extends Dao {
-    
+
     //---------- DATA RETRIEVAL ----------//
-    
-     public function find($sql) {
+    //return a single row based on an SQL query, and map it to an object
+    public function find($sql) {
         $row = $this->getRow($sql);
         $booking = new Booking();
         BookingMapper::map($booking, $row);
         $result = $booking;
         return $result;
     }
-    
+
     //---------- CRUD FUNCTIONALITY ----------//
-    
+
+    //insert the booking into the database using a prepared statement
     public function save(Booking $booking) {
         $booking->setId(null);
         $booking->setStatus('active');
@@ -23,9 +23,9 @@ class BookingDao extends Dao {
                 VALUES (:id, :showingId, :userId, :status)';
         return $this->execute($sql, $booking);
     }
-    
-    
-     public function delete($id) {
+
+    //set the status of the database entry to 'deleted' usin a prepared statement. This also sets the junctions' status to 'deleted'    
+    public function delete($id) {
         $sql = '
             UPDATE bookings, bookings_seats SET
                 bookings.booking_status = :status,
@@ -40,10 +40,9 @@ class BookingDao extends Dao {
         return $statement->rowCount() == 1;
     }
 
-
     //---------- PREPARED STATEMENT EXECUTIONS ----------//
-    
-      private function execute($sql, Booking $booking) {
+
+    private function execute($sql, Booking $booking) {
         $db = $this->getDb();
         $statement = $db->prepare($sql);
         $this->executeStatement($statement, $this->getParams($booking));

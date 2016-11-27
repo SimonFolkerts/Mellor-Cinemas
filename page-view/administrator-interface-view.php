@@ -2,21 +2,26 @@
 
     <div>
         <h3>Add Movie</h3>
-        <form>
-            Title: <input type="text" name="title"><br>
+        <form action="index.php?page=administrator-interface&create-movie=true" method="post">
+            Title: <input type="text" name="movie_title"><br>
             Poster Filename: <input type="text" name="poster"><br>
             Synopsis<br>
             <textarea name="synopsis" rows="8"></textarea><br>
-            <button>Add Movie</button>
+            <button type="submit" name="save">Add Movie</button>
         </form>
+        
         <h3>Add Showing</h3>
-        <form>
-            Movie Id: <input type="number" name="movieId"><br>
-            Date: <input type="text" name="date"><br>
-            Start Time: <input type="text" name="start"><br>
-            End Time: <input type="text" name="end"><br>
-            Cinema: <input type="text" name="cinema"><br>
-            <button>Add Showing</button>
+        <form action="index.php?page=administrator-interface&create-showing=true" method="post">
+            Movie: <select name="movie_id">
+                <?php foreach ($movies as $movie) : ?>
+                <option value="<?php echo $movie->getId(); ?>"><?php echo $movie->getTitle(); ?></option>
+                <?php endforeach ?>
+            </select>
+            Date: <input type="text" name="date" value="dd/mm/yy"><br>
+            Start Time: <input type="text" name="start" value="24:00"><br>
+            End Time: <input type="text" name="end" value="24:00"><br>
+            Cinema: <input type="text" name="cinema" value="1"><br>
+            <button type="submit" name="save">Add Showing</button>
         </form>
     </div>
 
@@ -41,8 +46,8 @@
 
     <div>
         <h3>Showings 
-        <?php if (array_key_exists('movieId', $_POST)) : ?>
-            <?php echo 'for: ' . $title ?></h3>
+            <?php if (array_key_exists('movieId', $_POST)) : ?>
+                <?php echo 'for: ' . $title ?></h3>
             <?php foreach ($showings as $showing) : ?>
                 <ul>
                     <li>Movie Title: <?php echo $title ?></li>
@@ -54,8 +59,8 @@
                 </ul>
             <?php endforeach; ?>
         <?php else : ?>
-            </h3><p>No showings</p>
-        <?php endif; ?>
+        </h3><p>No showings</p>
+    <?php endif; ?>
     </div>
 
     <div>
@@ -79,8 +84,8 @@
 
     <div>
         <h3>Bookings 
-        <?php if (array_key_exists('userId', $_GET)) : ?>
-            <?php echo 'for ' . $booking['user']; ?></h3>
+            <?php if (array_key_exists('userId', $_GET)) : ?>
+                <?php echo 'for ' . $booking['user']; ?></h3>
             <?php foreach ($data as $booking) : ?>
                 <p>ID: <?php echo $booking['id']; ?>
                 <p>Showing: <?php echo $booking['showing']; ?>

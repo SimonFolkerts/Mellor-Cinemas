@@ -1,5 +1,7 @@
 <?php
 
+//---------- DISPLAY SELECTED MOVIE ----------//
+
 $dao = new MovieDao();
 
 $sql = 'SELECT id, poster, movie_title, movie_synopsis FROM movies WHERE id = ' . $_GET['id'];
@@ -9,6 +11,9 @@ $movieId = $movie->getId();
 $moviePoster = $movie->getPoster();
 $movieTitle = $movie->getTitle();
 $movieSynopsis = $movie->getSynopsis();
+
+
+//---------- DISPLAY MOVIE SHOWINGS ----------//
 
 $dao = new ShowingDao();
 

@@ -23,13 +23,16 @@ class Dao {
         //and then return the database
         return $this->db;
     }
-    
-    
-        public function getRow($sql) {
+
+    //---------- DATA RETIEVAL ----------//
+
+    //return a single row based on an SQL query
+    public function getRow($sql) {
         $row = $this->query($sql)->fetch();
         return $row;
     }
 
+    //return a multiple rows based on an SQL query
     public function getRows($sql) {
         $result = array();
         foreach ($this->query($sql) as $row) {

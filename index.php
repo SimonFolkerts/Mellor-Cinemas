@@ -2,6 +2,7 @@
 
 final class Index {
 
+    //---------- LOAD CLASSES, MAPPERS AND DAOS ----------//
     //load the following classes into the scope
     public function loadClass($name) {
         $classes = array(
@@ -33,15 +34,17 @@ final class Index {
         require_once $classes[$name];
     }
 
-    //constants
+    //---------- CONSTANTS ----------//
     const PAGE_DIRECTORY = 'page';
 
-    //start session and initiate class loading
+    //---------- INITIALISATION ----------//
     public function init() {
         session_start();
         spl_autoload_register(array($this, 'loadClass'));
     }
 
+    //---------- PAGE ASSEMBLY ----------//
+    
     //function to check if there is a page key in the GET, 
     //if yes then set the $page variable to the keys value in the GET.
     private function getPage() {

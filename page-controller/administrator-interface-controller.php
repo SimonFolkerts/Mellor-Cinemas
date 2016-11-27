@@ -1,8 +1,11 @@
 <?php
 
+//return all movies in the database
 $dao = new Dao();
 $moviesSql = "SELECT id, poster, movie_title, movie_synopsis, status FROM movies";
 $movieRows = $dao->getRows($moviesSql);
+
+//map the movies to objects and append them to an array
 $movies = array();
 foreach ($movieRows as $movieRow) {
     $movie = new Movie();
@@ -10,9 +13,12 @@ foreach ($movieRows as $movieRow) {
     $movies[] = $movie;
 }
 
+//if a movie has been selected, return its showings, including extra information from the movie table for clarity
 if (array_key_exists('movieId', $_POST)) {
     $showingsSql = "SELECT movie_title, showings.id, date, start_time, end_time, cinema, showings.status FROM showings, movies WHERE movies.id = showings.movie_id AND movie_id =" . $_POST['movieId'];
     $showingRows = $dao->getRows($showingsSql);
+
+    //map the showings to objects and append them to an array
     $showings = array();
     foreach ($showingRows as $showingRow) {
         $title = $showingRow['movie_title'];
@@ -22,8 +28,10 @@ if (array_key_exists('movieId', $_POST)) {
     }
 }
 
+//return all users in the database
 $usersSql = "SELECT users.id, username, password, email, users.status, count(bookings.id) as booking_count FROM users LEFT JOIN bookings ON bookings.user_id = users.id GROUP BY users.id";
 $userRows = $dao->getRows($usersSql);
+//map the users to objects and append them to an array
 $users = array();
 foreach ($userRows as $userRow) {
     $user = new User();
@@ -64,14 +72,17 @@ if (array_key_exists('userId', $_GET)) {
             . "bookings.id = bookings_seats.booking_id "
             . "AND users.id = " . $_GET['userId'];
 
+    //nested for loops to display multi-row data
     $bookingRows = $dao->getRows($bookingsSql);
     $data = '';
     $bookingId = '';
     $lastId = '';
     $i = 0;
 
+    //create an array, and loop through the rows
     foreach ($bookingRows as $row) {
         $bookingId = $row['booking_id'];
+        //if a new booking id is encountered, append it to the array with a specific index
         if ($lastId != $bookingId) {
             $i++;
             $data[$i] = array(
@@ -86,11 +97,104 @@ if (array_key_exists('userId', $_GET)) {
                 'status' => $row['booking_status']
             );
         }
+        //if the booking id has not changed, skip everything except the seats.
+        //for every row, append the seat cordinates to the current array index
         $data[$i]['seats'][] = array(
             'row' => $row['cinema_row'],
             'seat' => $row['cinema_column']
         );
 
         $lastId = $bookingId;
+    }
+}
+//an array with an entry for each unique booking id, with a sub-array containing all seats assigned to that booking id is created
+// (array[information, seats[[x,y], [x,y], [x,y]]
+
+
+//create or edit a new movie
+if (isset($_GET['create-movie'])) {
+    $edit = array_key_exists('id', $_GET);
+    if ($edit) {
+        //if sepcific entry selected, retrieve its data via GET id        
+        $dao = new MovieDao();
+        $movie = Utilities::getObjByGetId($dao);
+    } else {
+        //otherwise generate empty movie object
+        $movie = new Movie();
+        $userId = null;
+        $movie->setId($userId);
+        $movie->setPoster('');
+        $movie->setTitle('');
+        $movie->setSynopsis('');
+        $movie->setStatus('');
+    }
+    
+    //map supplied information to the existing/new object
+    if (array_key_exists('save', $_POST)) {
+
+        $data = array(
+            'poster' => $_POST['poster'],
+            'movie_title' => $_POST['movie_title'],
+            'movie_synopsis' => $_POST['synopsis']
+        );
+
+        MovieMapper::map($movie, $data);
+
+//        $errors = UserValidator::validate($user);
+        $errors = [];
+        //TODO ensure unique entries
+        //TODO add functionality for updating existing user
+
+        if (empty($errors)) {
+            $dao = new MovieDao();
+            $dao->save($movie);
+            $movie = $dao->getMovieDetails($movie->getTitle(), $dao->getDb());
+            header('Location: index.php?page=administrator-interface');
+        }
+    }
+}
+
+//create or edit a new showing
+if (isset($_GET['create-showing'])) {
+    $edit = array_key_exists('id', $_GET);
+    if ($edit) {
+        //if sepcific entry selected, retrieve its data via GET id  
+        $dao = new ShowingDao();
+        $showing = Utilities::getObjByGetId($dao);
+    } else {
+        //otherwise generate empty movie object
+        $showing = new Showing();
+        $showingId = null;
+        $showing->setId($showingId);
+        $showing->setDate('');
+        $showing->setStartTime('');
+        $showing->setEndTime('');
+        $showing->setCinema('');
+        $showing->setStatus('');
+    }
+    
+    //map supplied information to the existing/new object
+    if (array_key_exists('save', $_POST)) {
+
+        $data = array(
+            'movie_id' => $_POST['movie_id'],
+            'date' => $_POST['date'],
+            'start_time' => $_POST['start'],
+            'end_time' => $_POST['end'],
+            'cinema' => $_POST['cinema']
+        );
+
+        ShowingMapper::map($showing, $data);
+
+//        $errors = UserValidator::validate($user);
+        $errors = [];
+        //TODO ensure unique entries
+        //TODO add functionality for updating existing user
+
+        if (empty($errors)) {
+            $dao = new ShowingDao();
+            $dao->save($showing);
+            header('Location: index.php?page=administrator-interface');
+        }
     }
 }
