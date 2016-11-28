@@ -2,7 +2,7 @@
 
 //return all movies in the database
 $dao = new Dao();
-$moviesSql = "SELECT movies.id, poster, movie_title, movie_synopsis, movies.status, count(showings.id) as showing_count FROM movies LEFT JOIN showings ON showings.movie_id = movies.id GROUP BY movies.id";
+$moviesSql = "SELECT movies.id, poster, movie_title, movie_synopsis, movies.status, count(showings.id) as showing_count FROM movies LEFT JOIN showings ON showings.movie_id = movies.id AND showings.status != 'deleted' WHERE movies.status != 'deleted' GROUP BY movies.id";
 $movieRows = $dao->getRows($moviesSql);
 
 //map the movies to objects and append them to an array
@@ -10,13 +10,13 @@ $movies = array();
 foreach ($movieRows as $movieRow) {
     $movie = new Movie();
     MovieMapper::map($movie, $movieRow);
-     $movie->setShowings($movieRow['showing_count']);
+    $movie->setShowings($movieRow['showing_count']);
     $movies[] = $movie;
 }
 
 //if a movie has been selected, return its showings, including extra information from the movie table for clarity
 if (array_key_exists('movieId', $_POST)) {
-    $showingsSql = "SELECT movie_title, showings.id, date, start_time, end_time, cinema, showings.status FROM showings, movies WHERE movies.id = showings.movie_id AND movie_id =" . $_POST['movieId'];
+    $showingsSql = "SELECT movie_title, showings.id, date, start_time, end_time, cinema, showings.status, count(bookings.id) as bookings FROM movies, showings LEFT JOIN bookings ON showings.id = bookings.showing_id AND bookings.booking_status != 'deleted' WHERE movies.id = showings.movie_id AND movie_id =" . $_POST['movieId'] . " GROUP BY showings.id";
     $showingRows = $dao->getRows($showingsSql);
 
     //map the showings to objects and append them to an array
@@ -27,6 +27,7 @@ if (array_key_exists('movieId', $_POST)) {
             $title = $showingRow['movie_title'];
             $showing = new Showing();
             ShowingMapper::map($showing, $showingRow);
+            $showing->setBookings($showingRow['bookings']);
             $showings[] = $showing;
         }
     } else
@@ -34,7 +35,7 @@ if (array_key_exists('movieId', $_POST)) {
 }
 
 //return all users in the database
-$usersSql = "SELECT users.id, username, password, email, users.status, count(bookings.id) as booking_count FROM users LEFT JOIN bookings ON bookings.user_id = users.id GROUP BY users.id";
+$usersSql = "SELECT users.id, username, password, email, users.status, count(bookings.id) as booking_count FROM users LEFT JOIN bookings ON bookings.user_id = users.id AND bookings.booking_status != 'deleted' GROUP BY users.id";
 $userRows = $dao->getRows($usersSql);
 //map the users to objects and append them to an array
 $users = array();
@@ -118,9 +119,11 @@ if (array_key_exists('userId', $_POST)) {
     } else {
         $noBookings = true;
     }
+} else {
+    $noBookings = true;
 }
 //an array with an entry for each unique booking id, with a sub-array containing all seats assigned to that booking id is created
-// (array[information, seats[[x,y], [x,y], [x,y]]
+//(array[information, seats[[x,y], [x,y], [x,y]]
 //create or edit a new movie
 if (isset($_GET['create-movie'])) {
     $edit = array_key_exists('id', $_GET);

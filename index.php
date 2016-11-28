@@ -25,6 +25,7 @@ final class Index {
             'UserDao' => 'dao/UserDao.php',
             'User' => 'classes/User.php',
             'UserMapper' => 'mapping/UserMapper.php',
+            'UserCredentialsValidator' => 'validation/UserCredentialsValidator.php',
             'UserValidator' => 'validation/UserValidator.php',
             'Utilities' => 'utilities/Utilities.php'
         );

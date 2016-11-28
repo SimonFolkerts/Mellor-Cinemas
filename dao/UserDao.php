@@ -72,7 +72,9 @@ class UserDao extends Dao {
     //set the status of the database entry to 'deleted' using a prepared statement, as well as the bookings and junctions associated with the entry
     public function delete($id) {
         $sql = '
-            UPDATE users bookings, bookings_seats SET
+            UPDATE users bookings, 
+                bookings_seats 
+            SET
                 bookings.booking_status = :status,
                 bookings_seats.status = :status,
                 users.status = :status

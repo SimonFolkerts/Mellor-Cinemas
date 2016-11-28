@@ -1,3 +1,6 @@
+<?php if (array_key_exists('id', $_GET)) : ?>
+<p>Please log in or create an account to book seats online</p>
+<?php endif; ?>
 <form id="login-form" method="post" action="index.php?page=login">
     <div>
         User Name: <input type="text" name="username"><br>

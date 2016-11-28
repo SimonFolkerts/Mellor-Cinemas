@@ -66,7 +66,16 @@ class Showing {
         $this->status = $status;
     }
 
+    //----------- CLIENT SIDE PROPERTIES ----------//
+    
+    private $bookings;
+    
+    function getBookings() {
+        return $this->bookings;
+    }
 
-
+    function setBookings($bookings) {
+        $this->bookings = $bookings;
+    }
 
 }
