@@ -26,7 +26,7 @@ class UserDao extends Dao {
         return $result;
     }
 
-    //return a multiple rows based on an SQL query, mapping each one to an object which is then appended to an array. The array is then returned
+    //return an object by its id (for use with Utiltiy 'getObjByGetId()')
     public function findById($id) {
         $row = $this->query("SELECT * FROM users WHERE id = " . (int) $id . " AND status = 'active'")->fetch();
         if (!$row) {
@@ -69,13 +69,15 @@ class UserDao extends Dao {
         return $this->execute($sql, $user);
     }
 
-    //set the status of the database entry to 'deleted' usin a prepared statement
+    //set the status of the database entry to 'deleted' using a prepared statement, as well as the bookings and junctions associated with the entry
     public function delete($id) {
         $sql = '
-            UPDATE users SET
-                status = :status
+            UPDATE users bookings, bookings_seats SET
+                bookings.booking_status = :status,
+                bookings_seats.status = :status,
+                users.status = :status
             WHERE
-                id = :id';
+                users.id = :id AND bookings.id = users.id AND bookings_seats.booking_id = bookings.id';
         $statement = $this->getDb()->prepare($sql);
         $this->executeStatement($statement, array(
             ':status' => 'deleted',

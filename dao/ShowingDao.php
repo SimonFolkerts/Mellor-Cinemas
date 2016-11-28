@@ -23,8 +23,18 @@ class ShowingDao extends Dao {
         return $result;
     }
 
+    //return an object by its id (for use with Utiltiy 'getObjByGetId()')
+    public function findById($id) {
+        $row = $this->query("SELECT * FROM showings WHERE id = " . (int) $id)->fetch();
+        if (!$row) {
+            throw new NotFoundException('No row returned');
+        }
+        $showing = new Showing();
+        ShowingMapper::map($showing, $row);
+        return $showing;
+    }
+
     //---------- CRUD FUNCTIONALITY ----------//
-    
     //if the object has no id, insert it into the database, else update pre-existing entry
     public function save(Showing $showing) {
         if ($showing->getId() === null) {
@@ -55,6 +65,21 @@ class ShowingDao extends Dao {
             WHERE
                 id = :id';
         return $this->execute($sql, $showing);
+    }
+
+    //set the status of the database entry to 'deleted' using a prepared statement
+    public function delete($id) {
+        $sql = '
+            UPDATE showings SET
+                status = :status
+            WHERE
+                id = :id';
+        $statement = $this->getDb()->prepare($sql);
+        $this->executeStatement($statement, array(
+            ':status' => 'deleted',
+            ':id' => $id,
+        ));
+        return $statement->rowCount() == 1;
     }
 
     //---------- PREPARED STATEMENT EXECUTION ----------//

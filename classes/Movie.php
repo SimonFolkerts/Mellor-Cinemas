@@ -46,5 +46,18 @@ class Movie {
     function setStatus($status) {
         $this->status = $status;
     }
+    
+     //----------- CLIENT SIDE PROPERTIES ----------//
+    
+    private $showings;
+    
+    public function getShowings() {
+        return $this->showings;
+    }
+
+    public function setShowings($showings) {
+        $this->showings = $showings;
+    }
+
 
 }

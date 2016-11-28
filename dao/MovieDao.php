@@ -3,7 +3,6 @@
 class MovieDao extends Dao {
 
     //---------- DATA RETRIEVAL ----------//
-
     //return a row based on the supplied information, and map it to an object. If nothing is returned, return null
     public function getMovieDetails($title, $db) {
         $statement = $db->query('SELECT * FROM movies WHERE movie_title = "' . $title . '" AND status != "deleted"');
@@ -38,8 +37,18 @@ class MovieDao extends Dao {
         return $result;
     }
 
-    //---------- CRUD FUNCTIONALITY ----------//
+    //return an object by its id (for use with Utiltiy 'getObjByGetId()')
+    public function findById($id) {
+        $row = $this->query("SELECT * FROM movies WHERE id = " . (int) $id)->fetch();
+        if (!$row) {
+            throw new NotFoundException('No row returned');
+        }
+        $movie = new Movie();
+        MovieMapper::map($movie, $row);
+        return $movie;
+    }
 
+    //---------- CRUD FUNCTIONALITY ----------//
     //if the object has no id, insert it into the database, else update pre-existing entry    
     public function save(Movie $movie) {
         if ($movie->getId() === null) {
@@ -68,6 +77,21 @@ class MovieDao extends Dao {
             WHERE
                 id = :id';
         return $this->execute($sql, $movie);
+    }
+    
+       //set the status of the database entry to 'deleted' using a prepared statement, as well as its joined showings
+    public function delete($id) {
+        $sql = '
+            UPDATE movies, showings SET
+                movies.status = :status, showings.status = :status
+            WHERE
+                movies.id = :id AND movies.id = showings.movie_id';
+        $statement = $this->getDb()->prepare($sql);
+        $this->executeStatement($statement, array(
+            ':status' => 'deleted',
+            ':id' => $id,
+        ));
+        return $statement->rowCount() == 1;
     }
 
     //---------- PREPARED STATEMENT EXECUTIONS ----------//

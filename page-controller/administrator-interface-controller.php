@@ -2,7 +2,7 @@
 
 //return all movies in the database
 $dao = new Dao();
-$moviesSql = "SELECT id, poster, movie_title, movie_synopsis, status FROM movies";
+$moviesSql = "SELECT movies.id, poster, movie_title, movie_synopsis, movies.status, count(showings.id) as showing_count FROM movies LEFT JOIN showings ON showings.movie_id = movies.id GROUP BY movies.id";
 $movieRows = $dao->getRows($moviesSql);
 
 //map the movies to objects and append them to an array
@@ -10,6 +10,7 @@ $movies = array();
 foreach ($movieRows as $movieRow) {
     $movie = new Movie();
     MovieMapper::map($movie, $movieRow);
+     $movie->setShowings($movieRow['showing_count']);
     $movies[] = $movie;
 }
 
@@ -20,12 +21,16 @@ if (array_key_exists('movieId', $_POST)) {
 
     //map the showings to objects and append them to an array
     $showings = array();
-    foreach ($showingRows as $showingRow) {
-        $title = $showingRow['movie_title'];
-        $showing = new Showing();
-        ShowingMapper::map($showing, $showingRow);
-        $showings[] = $showing;
-    }
+    if ($showingRows) {
+        $noShowings = false;
+        foreach ($showingRows as $showingRow) {
+            $title = $showingRow['movie_title'];
+            $showing = new Showing();
+            ShowingMapper::map($showing, $showingRow);
+            $showings[] = $showing;
+        }
+    } else
+        $noShowings = true;
 }
 
 //return all users in the database
@@ -42,7 +47,7 @@ foreach ($userRows as $userRow) {
 
 //MINIFIED SQL: SELECT bookings.id as booking_id, movies.movie_title, showings.start_time, showings.end_time, users.username, seats.cinema_row, seats.cinema_column, bookings.booking_status FROM movies, bookings, showings, users, seats, bookings_seats WHERE bookings.user_id = users.id AND bookings.showing_id = showings.id AND movies.id = showings.movie_id AND seats.id = bookings_seats.seat_id AND bookings.id = bookings_seats.booking_id;
 
-if (array_key_exists('userId', $_GET)) {
+if (array_key_exists('userId', $_POST)) {
     $bookingsSql = ""
             . "SELECT bookings.id as booking_id, "
             . "movies.movie_title, "
@@ -74,43 +79,48 @@ if (array_key_exists('userId', $_GET)) {
 
     //nested for loops to display multi-row data
     $bookingRows = $dao->getRows($bookingsSql);
-    $data = '';
-    $bookingId = '';
-    $lastId = '';
-    $i = 0;
+    if ($bookingRows) {
+        $noBookings = false;
+        $data = '';
+        $bookingId = '';
+        $lastId = '';
+        $i = 0;
 
-    //create an array, and loop through the rows
-    foreach ($bookingRows as $row) {
-        $bookingId = $row['booking_id'];
-        //if a new booking id is encountered, append it to the array with a specific index
-        if ($lastId != $bookingId) {
-            $i++;
-            $data[$i] = array(
-                'id' => $row['booking_id'],
-                'showing' => $row['movie_title'],
-                'user' => $row['username'],
-                'userId' => $_GET['userId'],
-                'date' => $row['date'],
-                'start' => $row['start_time'],
-                'end' => $row['end_time'],
-                'seats' => [],
-                'status' => $row['booking_status']
+
+        //an array is used in lieu of object as the information is from several tables
+        //create an array, and loop through the rows
+        foreach ($bookingRows as $row) {
+            $bookingId = $row['booking_id'];
+            //if a new booking id is encountered, append it to the array with a specific index
+            if ($lastId != $bookingId) {
+                $i++;
+                $data[$i] = array(
+                    'id' => $row['booking_id'],
+                    'showing' => $row['movie_title'],
+                    'user' => $row['username'],
+                    'userId' => $_GET['userId'],
+                    'date' => $row['date'],
+                    'start' => $row['start_time'],
+                    'end' => $row['end_time'],
+                    'seats' => [],
+                    'status' => $row['booking_status']
+                );
+            }
+            //if the booking id has not changed, skip everything except the seats.
+            //for every row, append the seat cordinates to the current array index
+            $data[$i]['seats'][] = array(
+                'row' => $row['cinema_row'],
+                'seat' => $row['cinema_column']
             );
-        }
-        //if the booking id has not changed, skip everything except the seats.
-        //for every row, append the seat cordinates to the current array index
-        $data[$i]['seats'][] = array(
-            'row' => $row['cinema_row'],
-            'seat' => $row['cinema_column']
-        );
 
-        $lastId = $bookingId;
+            $lastId = $bookingId;
+        }
+    } else {
+        $noBookings = true;
     }
 }
 //an array with an entry for each unique booking id, with a sub-array containing all seats assigned to that booking id is created
 // (array[information, seats[[x,y], [x,y], [x,y]]
-
-
 //create or edit a new movie
 if (isset($_GET['create-movie'])) {
     $edit = array_key_exists('id', $_GET);
@@ -128,7 +138,7 @@ if (isset($_GET['create-movie'])) {
         $movie->setSynopsis('');
         $movie->setStatus('');
     }
-    
+
     //map supplied information to the existing/new object
     if (array_key_exists('save', $_POST)) {
 
@@ -172,7 +182,7 @@ if (isset($_GET['create-showing'])) {
         $showing->setCinema('');
         $showing->setStatus('');
     }
-    
+
     //map supplied information to the existing/new object
     if (array_key_exists('save', $_POST)) {
 
@@ -197,4 +207,22 @@ if (isset($_GET['create-showing'])) {
             header('Location: index.php?page=administrator-interface');
         }
     }
+}
+
+if (array_key_exists('delete-movie', $_GET)) {
+    $dao = new MovieDao();
+    $dao->delete($_GET['delete-movie']);
+    header('Location: index.php?administrator-interface');
+}
+
+if (array_key_exists('delete-showing', $_GET)) {
+    $dao = new ShowingDao();
+    $dao->delete($_GET['delete-showing']);
+    header('Location: index.php?administrator-interface');
+}
+
+if (array_key_exists('delete-user', $_GET)) {
+    $dao = new UserDao();
+    $dao->delete($_GET['delete-user']);
+    header('Location: index.php?administrator-interface');
 }
