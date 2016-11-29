@@ -4,13 +4,13 @@ class UserCredentialsValidator {
 
     public static function validateAll($username, $password, $email) {
 
-        $errors = UserCredentialsValidator::validateLogin($username, $password);
+        $errors = self::validateLogin($username, $password);
         
         if (!$email) {
             $errors[] = 'No Email Entered';
         }
 
-        $email = UserCredentialsValidator::testInput($email);
+        $email = self::testInput($email);
 
         // check if e-mail address is well-formed
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -24,7 +24,7 @@ class UserCredentialsValidator {
 
         $errors = array();
 
-        $username = UserCredentialsValidator::testInput($username);
+        $username = self::testInput($username);
 
         if (!$username) {
             $errors[] = 'No username entered';
@@ -38,7 +38,7 @@ class UserCredentialsValidator {
             $errors[] = 'No password entered';
         }
 
-        $password = UserCredentialsValidator::testInput($password);
+        $password = self::testInput($password);
 
         if (!preg_match("/^[\da-zA-Z ]*$/", $password)) {
             $errors[] = 'Only letters, numbers and spaces allowed in password';
