@@ -2,11 +2,18 @@
 
 /*---------- NAV ----------*/
 
-
-:root {
-  --trim-color: #FFA800;
+html {
+    height: 100%;
 }
 
+:root {
+    --trim-color: #FFA800;
+    --red-color: #b30000;
+}
+
+#navbar {
+    color: var(--trim-color);
+}
 
 #logo {
     width: 400px;
@@ -16,7 +23,6 @@
 #navbar {
     background-color: black;
 }
-
 
 #navbox-inner {
     margin: 3px 0px;
@@ -43,15 +49,177 @@
     text-decoration: none;
 }
 
+.current-page {
+    color: var(--red-color) !important;
+}
+
 /*----------- BODY ----------*/
 
 body {
     background-image: url("../img/deco-tile.jpg");
+    height: 100%
 }
 
 .page-container {
-    padding: 50px 0;
+    height: 100%;
     background-color: #262626;
     width: 80%;
     margin: auto;
+    max-width: 1920px;
+    font-family: Oswald, serif;
+    color: var(--trim-color);
+}
+
+/*---------- HOME ----------*/
+
+#carousel {
+    width: 895px; height: 320px;
+    overflow: hidden;
+
+    margin: 20px auto
+}
+#carousel ul { 
+    width: 200% ;
+    box-shadow: 0 10px 6px -6px #111;
+}
+
+#carousel li {
+    position: relative;
+    display: block;
+    width: 160px;
+    float: left;
+    box-shadow: 0 0 30px 8px #222;
+    transition: all 0.4s ease .300ms;
+}
+
+#carousel ul:hover li {
+    width: 40px;
+}
+
+#carousel ul li:hover {
+    width: 640px;
+}
+
+.caption {
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    bottom: 0;	
+    width: 640px
+}
+
+.caption p {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    font: normal 16px 'Lato', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding: 15px;
+}
+
+.movie-thumb {
+    width: 250px; 
+}
+/*---------- MOVIES -----------*/
+
+.movie {
+    display: flex;
+    padding: 50px;
+}
+
+.movie__poster {
+    height: 800px;
+}
+
+.movie__text-container {
+    padding: 50px;
+}
+
+.movie__title {
+    color: var(--red-color);
+    font-size: 40px;
+}
+
+.movie__synopsis {
+    font-size: 20px;
+    color: lightgray;
+}
+
+/*---------- ADMIN ----------*/
+
+.admin-pages {
+    padding: 30px;
+    font-family: Oswald, Sans;
+    color: var(--trim-color);
+}
+
+.admin-section {
+    padding: 0 20px 0 20px;
+}
+.add-forms {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.add-forms__container {
+    padding: 20px;
+}
+
+.add-forms__form input, textarea, select {
+    color: lightgray;
+    background-color: #404040;
+    border: 1px solid black;
+}
+
+.add-forms__form p {
+    margin: 10px 0 0 0;
+    padding: 0;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.list__listing {
+    width: 19%;
+    margin: 4px;
+    background-color: #404040;
+    min-width: 230px;
+}
+
+.list__info-list {
+    margin: 15px 10px 10px 0;
+}
+
+.list__button-box {
+    text-align: center;
+    padding: 5px;
+}
+
+.list__button-form {
+    display: inline;
+}
+
+.admin-section button:disabled {
+    background-color: dimgray;
+    cursor: not-allowed;
+}
+
+.list__button {
+    font-size: 14px;
+    margin: 5px;
+}
+
+.button {
+    margin: 5px;
+    background-color: var(--red-color);
+    border: none;
+    color: lightgray;
+    cursor: pointer;
+}
+
+summary {
+    outline: none;
+    cursor: pointer;
 }

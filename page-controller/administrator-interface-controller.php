@@ -16,7 +16,7 @@ foreach ($movieRows as $movieRow) {
 
 //if a movie has been selected, return its showings, including extra information from the movie table for clarity
 if (array_key_exists('movieId', $_POST)) {
-    $showingsSql = "SELECT movie_title, showings.id, date, start_time, end_time, cinema, showings.status, count(bookings.id) as bookings FROM movies, showings LEFT JOIN bookings ON showings.id = bookings.showing_id AND bookings.booking_status != 'deleted' WHERE movies.id = showings.movie_id AND movie_id =" . $_POST['movieId'] . " GROUP BY showings.id";
+    $showingsSql = "SELECT movie_title, showings.id, date, start_time, end_time, cinema, showings.status, count(bookings.id) as bookings FROM movies, showings LEFT JOIN bookings ON showings.id = bookings.showing_id AND bookings.booking_status != 'deleted' WHERE movies.id = showings.movie_id AND movie_id = " . $_POST['movieId'] . " GROUP BY showings.id";
     $showingRows = $dao->getRows($showingsSql);
 
     //map the showings to objects and append them to an array
@@ -30,8 +30,9 @@ if (array_key_exists('movieId', $_POST)) {
             $showing->setBookings($showingRow['bookings']);
             $showings[] = $showing;
         }
-    } else
-        $noShowings = true;
+    }
+} else {
+    $noShowings = true;
 }
 
 //return all users in the database
