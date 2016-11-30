@@ -12,7 +12,7 @@
             <div id="navbox-outer">
                 <div id="navbox-inner">
                     <?php if (isset($_SESSION['username'])) { ?>
-                        <p>Hello <?php echo $_SESSION['username'] ?></p>
+                        <p class="user-greeting">Hello <?php echo $_SESSION['username'] ?></p>
                     <?php } ?>
                     <ul id="nav-list">
                         <li><a href="http://localhost/MellorCinemas/index.php?page=home">Movies</a></li>
