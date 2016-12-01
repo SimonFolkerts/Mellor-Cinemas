@@ -1,5 +1,10 @@
 /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */progress,sub,sup{vertical-align:baseline}button,hr,input{overflow:visible}[type=checkbox],[type=radio],legend{box-sizing:border-box;padding:0}html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background-color:transparent;-webkit-text-decoration-skip:objects}a:active,a:hover{outline-width:0}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}dfn{font-style:italic}h1{font-size:2em;margin:.67em 0}mark{background-color:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}svg:not(:root){overflow:hidden}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}figure{margin:1em 40px}hr{box-sizing:content-box;height:0}button,input,select,textarea{font:inherit;margin:0}optgroup{font-weight:700}button,select{text-transform:none}[type=reset],[type=submit],button,html [type=button]{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:ButtonText dotted 1px}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{color:inherit;display:table;max-width:100%;white-space:normal}textarea{overflow:auto}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-input-placeholder{color:inherit;opacity:.54}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}
 
+* {
+    padding: 0;
+    margin: 0;
+}
+
 /*---------- NAV ----------*/
 
 html {
@@ -68,7 +73,7 @@ body {
 }
 
 .page-container {
-    height: 100%;
+    min-height: 100%;
     background-color: #262626;
     width: 80%;
     margin: auto;
@@ -84,30 +89,32 @@ body {
 /*http://codepen.io/JFarrow/full/iAuto/*/
 
 #carousel {
+    padding: 30px;
     margin: auto;
-    width: 96%; height: 370px;
+    width: 96%;
     overflow: hidden;
-    box-shadow: 0 10px 6px -6px #111;
 }
 #carousel ul {
-    padding: 0;
     list-style: none;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 100% ;
+    /*box-shadow: 0 10px 6px -6px #111;*/
 }
 
 #carousel li {
     position: relative;
-    width: 160px;
+    width: 250px;
+    height: 353px;
     float: left;
-    box-shadow: 0 0 30px 8px #222;
+    box-shadow: 0 10px 30px 8px #222;
     transition: all 0.4s ease .300ms;
 }
 
 #carousel ul li:hover {
     width: 250px;
     flex-shrink: 0;
+    /*flex-grow: 0;*/
 }
 
 .carousel-item {
@@ -135,21 +142,33 @@ body {
     -webkit-font-smoothing: antialiased;
     padding: 0 0 0 15px;
 }
- 
+
 
 /*---------- MOVIES -----------*/
 
 .movie {
+    background-color: #333333;
     display: flex;
-    padding: 50px;
+    align-items: flex-start;
+    padding: 30px;
 }
 
 .movie__poster {
-    height: 800px;
+    width: 100%;
+}
+
+.movie__poster-container {
+    overflow: hidden;
+    height: 500px;
+    min-width: 40%;
 }
 
 .movie__text-container {
-    padding: 50px;
+    padding-left: 50px;
+}
+
+.movie__text-container h2 {
+    padding-bottom: 50px;
 }
 
 .movie__title {
@@ -160,6 +179,51 @@ body {
 .movie__synopsis {
     font-size: 20px;
     color: lightgray;
+}
+
+.showing-display {
+    padding-bottom: 50px;
+}
+
+.showings {
+    padding-top: 40px;
+    margin: auto;
+    width: 90%;
+    min-width: 675px;
+    font-size: 20px;
+}
+
+.showings td {
+    border-left: 1px solid dimgray;
+    text-align: center;
+}
+
+.no-border {
+    border: none !important;
+}
+
+.spacer-row {
+    height: 20px;
+}
+
+.showing__date {
+    display: inline;
+    padding-right: 40px;
+}
+
+.showing__time {
+    text-decoration: none;
+    color: var(--red-color);
+}
+
+.showing-title {
+    margin-left: 30px;
+    font-size: 30px;
+}
+
+.movie-title {
+    font-size: 30px;
+    color: var(--red-color);
 }
 
 /*---------- ADMIN ----------*/
@@ -207,7 +271,7 @@ body {
 }
 
 .list__info-list {
-    margin: 15px 10px 10px 0;
+    margin: 15px 10px 10px 30px;
 }
 
 .list__button-box {
@@ -230,6 +294,7 @@ body {
 }
 
 .button {
+    padding: 3px 8px 3px 8px;
     margin: 5px;
     background-color: var(--red-color);
     border: none;
@@ -240,4 +305,28 @@ body {
 summary {
     outline: none;
     cursor: pointer;
+}
+
+/*---------- FOOTER -----------*/
+
+footer {
+    border-top: 1px solid var(--trim-color);
+    height: 200px;
+    background-color: black;
+}
+
+.footer-border {
+    margin-top: 3px;
+    border-top: 2px solid var(--trim-color);
+
+}
+
+.footer-wrapper {
+    height: 90%;
+    display: flex;
+    align-items: center;
+}
+
+.footer-logo {
+    width: 400px;
 }
