@@ -37,10 +37,10 @@ if (isset($_POST['submit'])) {
                     header('Location: index.php');
                 }
             } else {
-                $errors[] = 'NAH WRONG!';
+                $errors[] = 'Incorrect credentials!';
             }
         } else {
-            $errors[] = 'NAH WRONG!';
+            $errors[] = 'Incorrect credentials!';
         }
     }
 }

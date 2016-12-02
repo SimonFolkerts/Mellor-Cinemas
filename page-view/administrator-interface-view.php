@@ -1,7 +1,7 @@
 <section class="page-container">
     <?php if ($_SESSION['username'] === 'administrator') : ?>
         <section class="admin-pages">
-            <section class="admin-section">
+            <section class="wrapper-section">
                 <h3>Add Movie/Showing</h3>
                 <details>
                     <summary>Show Add Forms</summary>
@@ -9,7 +9,7 @@
                         <div class="add-forms__container">
                             <h3>Add Movie</h3>
                             <form class="add-forms__form" action="index.php?page=administrator-interface&create-movie=true" method="post">
-                                <p>Title: </p><input type="text" name="movie_title"><br>
+                                <label for="movie_title">Title: </label><input type="text" name="movie_title"><br>
                                 <p>Poster Filename: </p><input type="text" name="poster"><br>
                                 <p>Synopsis<br></p>
                                 <textarea name="synopsis" rows="6" cols="70"></textarea><br>
@@ -36,7 +36,7 @@
                 </details>
             </section>
 
-            <section class="admin-section">
+            <section class="wrapper-section">
                 <h3>Movies</h3>
                 <details>
                     <summary>Show Movies</summary>
@@ -86,7 +86,7 @@
 
 
 
-            <section class="admin-section">
+            <section class="wrapper-section">
                 <h3>Showings </h3>
                 <details>
                     <summary>Show Showings</summary>
@@ -122,7 +122,7 @@
                 </details>
             </section>
 
-            <section class="admin-section">
+            <section class="wrapper-section">
                 <h3>Users</h3>
                 <details>
                     <summary>Show Users</summary>
@@ -155,7 +155,7 @@
                 </details>
             </section>
 
-            <section class="admin-section">
+            <section class="wrapper-section">
                 <h3>Bookings</h3>
                 <details>
                     <summary>Show Bookings</summary>

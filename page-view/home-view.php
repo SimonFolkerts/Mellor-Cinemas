@@ -52,15 +52,25 @@
                                         <a class="showing__time" href="index.php?page=booking&id=<?php echo $showing['id']; ?>"><?php echo $time['start']; ?> - <?php echo $time['end']; ?></a>
                                     </td>
                                 <?php endforeach; ?>
-                                    <tr class="spacer-row"></tr>
                             <?php endif; ?>
-                        <?php endforeach ?>
-                    </tr>
+                        </tr>
+                        <tr class="spacer-row"></tr>
+                    <?php endforeach ?>
                 </table>
             <?php else : ?>
                 <h3 class="showing-title">No Showings for <span class="movie-title"><?php echo $movieTitle ?></span></h3>
-                <?php endif ?>
+            <?php endif ?>
         </section>
 
+    <?php else: ?>
+        <section class="home-greeting">
+            <h1>Welcome to the Mellor Cinema Website</h1>
+
+            <p>Please select a movie from the list to view dates and times.</p>
+            <div class="gif-box">
+                <img class="clapper placeholder-gif" src="web/img/clapper.gif"/><img class="reel placeholder-gif" src="web/img/reel.gif"/><img class="masks placeholder-gif"src="web/img/masks.gif"/>
+            </div>
+        </section>
     <?php endif; ?>
+    <div class="page-spacer"></div> 
 </section>

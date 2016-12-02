@@ -32,4 +32,3 @@
         <p>No bookings to display.</p>
     <?php endif ?>
 </div>
-<p>--------------</p>
