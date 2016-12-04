@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.14
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2016 at 04:43 AM
--- Server version: 5.6.26
--- PHP Version: 5.6.12
+-- Generation Time: Dec 04, 2016 at 03:16 PM
+-- Server version: 10.1.19-MariaDB
+-- PHP Version: 7.0.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -26,12 +26,12 @@ SET time_zone = "+00:00";
 -- Table structure for table `bookings`
 --
 
-CREATE TABLE IF NOT EXISTS `bookings` (
+CREATE TABLE `bookings` (
   `id` int(11) NOT NULL,
   `showing_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `booking_status` varchar(255) NOT NULL DEFAULT 'active'
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `bookings`
@@ -39,7 +39,9 @@ CREATE TABLE IF NOT EXISTS `bookings` (
 
 INSERT INTO `bookings` (`id`, `showing_id`, `user_id`, `booking_status`) VALUES
 (44, 11, 13, 'active'),
-(45, 17, 13, 'active');
+(46, 15, 13, 'active'),
+(47, 15, 13, 'active'),
+(48, 15, 13, 'active');
 
 -- --------------------------------------------------------
 
@@ -47,23 +49,33 @@ INSERT INTO `bookings` (`id`, `showing_id`, `user_id`, `booking_status`) VALUES
 -- Table structure for table `bookings_seats`
 --
 
-CREATE TABLE IF NOT EXISTS `bookings_seats` (
+CREATE TABLE `bookings_seats` (
   `id` int(11) NOT NULL,
   `booking_id` int(11) NOT NULL,
-  `seat_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+  `seat_id` int(11) NOT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'active'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `bookings_seats`
 --
 
-INSERT INTO `bookings_seats` (`id`, `booking_id`, `seat_id`) VALUES
-(41, 44, 1),
-(42, 44, 2),
-(43, 45, 1),
-(44, 45, 2),
-(45, 45, 24),
-(46, 45, 25);
+INSERT INTO `bookings_seats` (`id`, `booking_id`, `seat_id`, `status`) VALUES
+(41, 44, 1, 'active'),
+(42, 44, 2, 'active'),
+(43, 45, 1, 'active'),
+(44, 45, 2, 'active'),
+(45, 45, 24, 'active'),
+(46, 45, 25, 'active'),
+(47, 46, 33, 'active'),
+(48, 46, 34, 'active'),
+(49, 46, 35, 'active'),
+(50, 47, 64, 'active'),
+(51, 47, 68, 'active'),
+(52, 47, 69, 'active'),
+(53, 48, 64, 'active'),
+(54, 48, 68, 'active'),
+(55, 48, 69, 'active');
 
 -- --------------------------------------------------------
 
@@ -71,13 +83,13 @@ INSERT INTO `bookings_seats` (`id`, `booking_id`, `seat_id`) VALUES
 -- Table structure for table `movies`
 --
 
-CREATE TABLE IF NOT EXISTS `movies` (
+CREATE TABLE `movies` (
   `id` int(11) NOT NULL,
   `movie_title` varchar(255) NOT NULL,
   `poster` varchar(255) NOT NULL,
   `movie_synopsis` text NOT NULL,
   `status` varchar(20) NOT NULL DEFAULT 'active'
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `movies`
@@ -98,12 +110,12 @@ INSERT INTO `movies` (`id`, `movie_title`, `poster`, `movie_synopsis`, `status`)
 -- Table structure for table `seats`
 --
 
-CREATE TABLE IF NOT EXISTS `seats` (
+CREATE TABLE `seats` (
   `id` int(11) NOT NULL,
   `cinema` int(11) NOT NULL,
   `cinema_row` int(11) NOT NULL,
   `cinema_column` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `seats`
@@ -117,7 +129,63 @@ INSERT INTO `seats` (`id`, `cinema`, `cinema_row`, `cinema_column`) VALUES
 (24, 1, 2, 1),
 (25, 1, 2, 2),
 (26, 1, 2, 3),
-(27, 1, 2, 4);
+(27, 1, 2, 4),
+(28, 1, 3, 1),
+(29, 1, 3, 2),
+(30, 1, 3, 3),
+(31, 1, 3, 4),
+(32, 1, 4, 1),
+(33, 1, 4, 2),
+(34, 1, 4, 3),
+(35, 1, 4, 4),
+(36, 1, 5, 1),
+(37, 1, 5, 2),
+(38, 1, 5, 3),
+(39, 1, 5, 4),
+(40, 1, 6, 1),
+(41, 1, 6, 2),
+(42, 1, 6, 3),
+(43, 1, 6, 4),
+(44, 1, 7, 1),
+(45, 1, 7, 2),
+(46, 1, 7, 3),
+(47, 1, 7, 4),
+(48, 1, 8, 1),
+(49, 1, 8, 2),
+(50, 1, 8, 3),
+(51, 1, 8, 4),
+(52, 1, 1, 5),
+(53, 1, 1, 6),
+(54, 1, 1, 7),
+(55, 1, 1, 8),
+(56, 1, 2, 5),
+(57, 1, 2, 6),
+(58, 1, 2, 7),
+(59, 1, 2, 8),
+(60, 1, 3, 5),
+(61, 1, 3, 6),
+(62, 1, 3, 7),
+(63, 1, 3, 8),
+(64, 1, 4, 5),
+(65, 1, 4, 6),
+(66, 1, 4, 7),
+(67, 1, 4, 8),
+(68, 1, 5, 5),
+(69, 1, 5, 6),
+(70, 1, 5, 7),
+(71, 1, 5, 8),
+(72, 1, 6, 5),
+(73, 1, 6, 6),
+(74, 1, 6, 7),
+(75, 1, 6, 8),
+(76, 1, 7, 5),
+(77, 1, 7, 6),
+(78, 1, 7, 7),
+(79, 1, 7, 8),
+(80, 1, 8, 5),
+(81, 1, 8, 6),
+(82, 1, 8, 7),
+(83, 1, 8, 8);
 
 -- --------------------------------------------------------
 
@@ -125,7 +193,7 @@ INSERT INTO `seats` (`id`, `cinema`, `cinema_row`, `cinema_column`) VALUES
 -- Table structure for table `showings`
 --
 
-CREATE TABLE IF NOT EXISTS `showings` (
+CREATE TABLE `showings` (
   `id` int(11) NOT NULL,
   `movie_id` int(11) NOT NULL,
   `date` varchar(255) NOT NULL,
@@ -133,21 +201,22 @@ CREATE TABLE IF NOT EXISTS `showings` (
   `end_time` varchar(255) NOT NULL,
   `cinema` varchar(255) NOT NULL,
   `status` varchar(20) NOT NULL DEFAULT 'active'
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `showings`
 --
 
 INSERT INTO `showings` (`id`, `movie_id`, `date`, `start_time`, `end_time`, `cinema`, `status`) VALUES
-(11, 5, '12/12/12', '24:00', '24:00', '1', 'active'),
+(11, 5, '12/12/12', '22:00', '24:00', '1', 'active'),
 (12, 5, '12/12/12', '15:00', '17:00', '1', 'active'),
 (13, 5, '11/12/12', '10:00', '12:00', '1', 'active'),
-(14, 5, '11/12/12', '24:00', '24:00', '1', 'active'),
+(14, 5, '11/12/12', '22:00', '24:00', '1', 'active'),
 (15, 5, '10/12/12', '10:00', '12:00', '1', 'active'),
-(16, 5, '10/12/12', '24:00', '24:00', '1', 'active'),
+(16, 5, '10/12/12', '22:00', '24:00', '1', 'active'),
 (17, 5, '12/12/12', '08:00', '10:00', '1', 'active'),
-(18, 5, '12/12/12', '17:00', '19:00', '1', 'active');
+(18, 5, '12/12/12', '17:00', '19:00', '1', 'active'),
+(19, 5, '11/12/12', '12:00', '14:00', '1', 'active');
 
 -- --------------------------------------------------------
 
@@ -155,13 +224,13 @@ INSERT INTO `showings` (`id`, `movie_id`, `date`, `start_time`, `end_time`, `cin
 -- Table structure for table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `status` varchar(20) NOT NULL DEFAULT 'active'
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
@@ -221,32 +290,32 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 --
 -- AUTO_INCREMENT for table `bookings_seats`
 --
 ALTER TABLE `bookings_seats`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 --
 -- AUTO_INCREMENT for table `movies`
 --
 ALTER TABLE `movies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `seats`
 --
 ALTER TABLE `seats`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 --
 -- AUTO_INCREMENT for table `showings`
 --
 ALTER TABLE `showings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

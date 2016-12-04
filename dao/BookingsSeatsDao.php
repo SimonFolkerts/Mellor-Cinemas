@@ -5,7 +5,7 @@ class BookingsSeatsDao extends Dao {
 //----------- CRUD FUNCITONALITY ------------//
 //---------- PREPARED STATEMENT EXECUTIONS ----------//
     
-    //batch insert a junction between seats and bookings into the database junction table 'bookins_seats' 
+    //batch insert a junction between seats and bookings into the database junction table 'bookings_seats' 
     public function save($id, $seats) {
         $db = $this->getDb();
         

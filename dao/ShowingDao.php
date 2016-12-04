@@ -27,7 +27,7 @@ class ShowingDao extends Dao {
     public function findById($id) {
         $row = $this->query("SELECT * FROM showings WHERE id = " . (int) $id)->fetch();
         if (!$row) {
-            throw new NotFoundException('No row returned');
+            throw new Exception('No row returned');
         }
         $showing = new Showing();
         ShowingMapper::map($showing, $row);

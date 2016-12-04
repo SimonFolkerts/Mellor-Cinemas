@@ -5,7 +5,7 @@
                 <li>
                     <div class="carousel-item">
                         <div class="carousel-item__caption"><p><?php echo $movie->getTitle(); ?></p></div>
-                        <a href="index.php?page=home&id=<?php echo $movie->getId(); ?>"><img class="carousel-item__movie-thumb" title="<?php echo $movie->getTitle(); ?>" src="web/img/image-uploads/<?php echo $movie->getPoster(); ?>"/></a>
+                        <a href="index.php?page=home&id=<?php echo $movie->getId(); ?>"><img class="carousel-item__movie-thumb" title="<?php echo $movie->getTitle(); ?>" src="../web/img/image-uploads/<?php echo $movie->getPoster(); ?>"/></a>
                     </div>
                 </li>
             <?php endforeach ?>
@@ -16,7 +16,7 @@
     <?php if (array_key_exists('id', $_GET)) : ?>
         <div class="movie">
             <div class="movie__poster-container">
-                <img class="movie__poster" src="web/img/image-uploads/<?php echo $moviePoster ?>">
+                <img class="movie__poster" src="../web/img/image-uploads/<?php echo $moviePoster ?>">
             </div>
             <div class="movie__text-container">
                 <h2 class="movie__title"><?php echo $movieTitle ?></h2>
@@ -68,7 +68,7 @@
 
             <p>Please select a movie from the list to view dates and times.</p>
             <div class="gif-box">
-                <img class="clapper placeholder-gif" src="web/img/clapper.gif"/><img class="reel placeholder-gif" src="web/img/reel.gif"/><img class="masks placeholder-gif"src="web/img/masks.gif"/>
+                <img class="clapper placeholder-gif" src="../web/img/clapper.gif"/><img class="reel placeholder-gif" src="../web/img/reel.gif"/><img class="masks placeholder-gif"src="../web/img/masks.gif"/>
             </div>
         </section>
     <?php endif; ?>

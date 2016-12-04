@@ -1,5 +1,13 @@
 <?php
 
+//----------- HEADER OBJECT -----------//
+
+$headerInfo = new HeaderInfo();
+
+$headerInfo->setTitle('Mellor Cinema | Home');
+$headerInfo->setDescription('The Mellor Cinema website provides movies and showing times with up to date info on the latest flicks. Buy tickets online.');
+$headerInfo->setKeywords('Mellor, Cinema, movie, ticket');
+
 //----------- DISPLAY ALL MOVIES ----------//
 
 $dao = new MovieDao();

@@ -1,5 +1,5 @@
 <!--header***********-->
-<?php require 'partials/header.php'; ?>
+<?php require '../partials/header.php'; ?>
 
 
 <!--view-->
@@ -7,4 +7,4 @@
 
 
 <!--footer***********-->
-<?php require 'partials/footer.php'; ?>
+<?php require '../partials/footer.php'; ?>

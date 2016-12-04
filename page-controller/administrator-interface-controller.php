@@ -1,8 +1,37 @@
 <?php
 
+//----------- HEADER OBJECT -----------//
+
+$headerInfo = new HeaderInfo();
+
+$headerInfo->setTitle('Mellor Cinema | Admin');
+$headerInfo->setDescription(null);
+$headerInfo->setKeywords(null);
+
 //return all movies in the database
 $dao = new Dao();
-$moviesSql = "SELECT movies.id, poster, movie_title, movie_synopsis, movies.status, count(showings.id) as showing_count FROM movies LEFT JOIN showings ON showings.movie_id = movies.id AND showings.status != 'deleted' WHERE movies.status != 'deleted' GROUP BY movies.id";
+//MINIFIED SQL: SELECT movies.id, poster, movie_title, movie_synopsis, movies.status, count(showings.id) as showing_count FROM movies LEFT JOIN showings ON showings.movie_id = movies.id AND showings.status != 'deleted' WHERE movies.status != 'deleted' GROUP BY movies.id;
+$moviesSql = ""
+     . "SELECT "
+        . "movies.id, "
+        . "poster, "
+        . "movie_title, "
+        . "movie_synopsis, "
+        . "movies.status, "
+        . "count(showings.id) as showing_count "
+     . "FROM "
+        . "movies "
+     . "LEFT JOIN "
+        . "showings "
+     . "ON "
+        . "showings.movie_id = movies.id "
+     . "AND "
+        . "showings.status != 'deleted' "
+     . "WHERE "
+        . "movies.status != 'deleted' "
+     . "GROUP BY "
+        . "movies.id;";
+
 $movieRows = $dao->getRows($moviesSql);
 
 //map the movies to objects and append them to an array
@@ -16,7 +45,32 @@ foreach ($movieRows as $movieRow) {
 
 //if a movie has been selected, return its showings, including extra information from the movie table for clarity
 if (array_key_exists('movieId', $_POST)) {
-    $showingsSql = "SELECT movie_title, showings.id, date, start_time, end_time, cinema, showings.status, count(bookings.id) as bookings FROM movies, showings LEFT JOIN bookings ON showings.id = bookings.showing_id AND bookings.booking_status != 'deleted' WHERE movies.id = showings.movie_id AND movie_id = " . $_POST['movieId'] . " GROUP BY showings.id";
+    //MINIFIED SQL: SELECT movie_title, showings.id, date, start_time, end_time, cinema, showings.status, count(bookings.id) as bookings FROM movies, showings LEFT JOIN bookings ON showings.id = bookings.showing_id AND bookings.booking_status != 'deleted' WHERE movies.id = showings.movie_id AND movie_id = " . $_POST['movieId'] . " GROUP BY showings.id ORDER BY showings.date DESC, showings.start_time ASC
+    $showingsSql = ""
+         . "SELECT "
+            . "movie_title, "
+            . "showings.id, "
+            . "date, "
+            . "start_time, "
+            . "end_time, "
+            . "cinema, "
+            . "showings.status, "
+            . "count(bookings.id) as bookings FROM movies, "
+            . "showings "
+         . "LEFT JOIN "
+            . "bookings ON showings.id = bookings.showing_id "
+         . "AND "
+            . "bookings.booking_status != 'deleted' "
+         . "WHERE "
+            . "movies.id = showings.movie_id "
+         . "AND "
+            . "movie_id = " . $_POST['movieId'] . " "
+         . "GROUP BY "
+            . "showings.id "
+         . "ORDER BY "
+            . "showings.date DESC, "
+            . "showings.start_time ASC;";
+    
     $showingRows = $dao->getRows($showingsSql);
 
     //map the showings to objects and append them to an array
@@ -36,7 +90,25 @@ if (array_key_exists('movieId', $_POST)) {
 }
 
 //return all users in the database
-$usersSql = "SELECT users.id, username, password, email, users.status, count(bookings.id) as booking_count FROM users LEFT JOIN bookings ON bookings.user_id = users.id AND bookings.booking_status != 'deleted' GROUP BY users.id";
+//MINIFIED SQL: SELECT users.id, username, password, email, users.status, count(bookings.id) as booking_count FROM users LEFT JOIN bookings ON bookings.user_id = users.id AND bookings.booking_status != 'deleted' GROUP BY users.id";
+$usersSql = ""
+     . "SELECT "
+        . "users.id, "
+        . "username, "
+        . "password, "
+        . "email, "
+        . "users.status, "
+        . "count(bookings.id) as booking_count "
+     . "FROM "
+        . "users "
+     . "LEFT JOIN "
+        . "bookings "
+     . "ON "
+        . "bookings.user_id = users.id "
+     . "AND "
+        . "bookings.booking_status != 'deleted' "
+     . "GROUP BY "
+        . "users.id";
 $userRows = $dao->getRows($usersSql);
 //map the users to objects and append them to an array
 $users = array();
@@ -50,6 +122,7 @@ foreach ($userRows as $userRow) {
 //MINIFIED SQL: SELECT bookings.id as booking_id, movies.movie_title, showings.start_time, showings.end_time, users.username, seats.cinema_row, seats.cinema_column, bookings.booking_status FROM movies, bookings, showings, users, seats, bookings_seats WHERE bookings.user_id = users.id AND bookings.showing_id = showings.id AND movies.id = showings.movie_id AND seats.id = bookings_seats.seat_id AND bookings.id = bookings_seats.booking_id;
 
 if (array_key_exists('userId', $_POST)) {
+//MINIFIED SQL: SELECT bookings.id as booking_id, movies.movie_title, showings.date, showings.start_time, showings.end_time, users.username, seats.cinema_row, seats.cinema_column, bookings.booking_status FROM movies, bookings, showings, users, seats, bookings_seats WHERE bookings.user_id = users.id AND bookings.showing_id = showings.id AND movies.id = showings.movie_id AND seats.id = bookings_seats.seat_id AND bookings.id = bookings_seats.booking_id AND users.id = " . $_GET['userId'] . " ORDER BY showings.date DESC, showings.start_time ASC;
     $bookingsSql = ""
             . "SELECT bookings.id as booking_id, "
             . "movies.movie_title, "
@@ -77,7 +150,8 @@ if (array_key_exists('userId', $_POST)) {
             . "seats.id = bookings_seats.seat_id "
             . "AND "
             . "bookings.id = bookings_seats.booking_id "
-            . "AND users.id = " . $_GET['userId'];
+            . "AND users.id = " . $_GET['userId'] . " "
+            . "ORDER BY showings.date DESC, showings.start_time ASC;";
 
     //nested for loops to display multi-row data
     $bookingRows = $dao->getRows($bookingsSql);
@@ -92,6 +166,7 @@ if (array_key_exists('userId', $_POST)) {
         //an array is used in lieu of object as the information is from several tables
         //create an array, and loop through the rows
         foreach ($bookingRows as $row) {
+            $bookingUsername = $row['username'];
             $bookingId = $row['booking_id'];
             //if a new booking id is encountered, append it to the array with a specific index
             if ($lastId != $bookingId) {

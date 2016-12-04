@@ -1,9 +1,18 @@
 <?php
+
+//----------- HEADER OBJECT -----------//
+
+$headerInfo = new HeaderInfo();
+
+$headerInfo->setTitle('Mellor Cinema | Account');
+$headerInfo->setDescription('Manage you Mellro Cinema account');
+$headerInfo->setKeywords('Mellor, Cinema, movie, account');
+
 //---------- USER OBJECT -----------//
 //
 //retrive the user from the database
 $dao = new UserDao();
-$sql = "SELECT id FROM users WHERE username = '" . $_SESSION['username'] . "'";
+$sql = "SELECT * FROM users WHERE username = '" . $_SESSION['username'] . "'";
 $user = $dao->find($sql);
 
 //---------- ACCOUNT DELETION ----------//

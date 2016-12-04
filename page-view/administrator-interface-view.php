@@ -9,10 +9,12 @@
                         <div class="add-forms__container">
                             <h3>Add Movie</h3>
                             <form class="add-forms__form" action="index.php?page=administrator-interface&create-movie=true" method="post">
-                                <label for="movie_title">Title: </label><input type="text" name="movie_title"><br>
-                                <p>Poster Filename: </p><input type="text" name="poster"><br>
-                                <p>Synopsis<br></p>
-                                <textarea name="synopsis" rows="6" cols="70"></textarea><br>
+                                <label for="movie_title">Title: </label>
+                                <input type="text" name="movie_title"><br><br>
+                                <label for="poster">Poster Filename: </label>
+                                <input type="text" name="poster"><br><br>
+                                Synopsis: <br>
+                                <textarea name="synopsis" rows="6" cols="55"></textarea><br>
                                 <button class="button" type="submit" name="save">Add Movie</button>
                             </form>
                         </div>
@@ -20,15 +22,20 @@
                         <div class="add-forms__container">
                             <h3>Add Showing</h3>
                             <form class="add-forms__form" action="index.php?page=administrator-interface&create-showing=true" method="post">
-                                <p>Movie: </p><select name="movie_id">
+                                <label for="movie_id">Movie: </label>
+                                <select name="movie_id">
                                     <?php foreach ($movies as $movie) : ?>
                                         <option value="<?php echo $movie->getId(); ?>"><?php echo $movie->getTitle(); ?></option>
                                     <?php endforeach ?>
-                                </select>
-                                <p>Date: </p><input type="text" name="date" value="dd/mm/yy"><br>
-                                <p>Start Time: </p><input type="text" name="start" value="24:00"><br>
-                                <p>End Time: </p><input type="text" name="end" value="24:00"><br>
-                                <p>Cinema: </p><input type="text" name="cinema" value="1"><br>
+                                </select><br><br>
+                                <label for="date">Date: </label>
+                                <input type="text" name="date" value="dd/mm/yy"><br><br>
+                                <label for="start">Start Time: </label>
+                                <input type="text" name="start" value="24:00"><br><br>
+                                <label for="end">End Time: </label>
+                                <input type="text" name="end" value="24:00"><br><br>
+                                <label for="cinema">Cinema: </label>
+                                <input type="text" name="cinema" value="1"><br><br>
                                 <button class="button" type="submit" name="save">Add Showing</button>
                             </form>
                         </div>
@@ -87,8 +94,8 @@
 
 
             <section class="wrapper-section">
-                <h3>Showings </h3>
-                <details>
+                <h3>Showings<?php if (array_key_exists('movieId', $_POST) && !$noShowings) { echo ' for <span class=\'movie-title\'>' . $title . '</span>';} ?></h3>
+                <details <?php if (array_key_exists('movieId', $_POST)) { echo 'open'; } ?>>
                     <summary>Show Showings</summary>
                     <?php if (array_key_exists('movieId', $_POST) && !$noShowings) : ?>
                         <div class="list">
@@ -156,8 +163,8 @@
             </section>
 
             <section class="wrapper-section">
-                <h3>Bookings</h3>
-                <details>
+                <h3>Bookings<?php if (!$noBookings) { echo ' for <span class=\'movie-title\'>' . $bookingUsername . '</span>'; } ?></h3>
+                <details <?php if (array_key_exists('userId', $_POST)) { echo 'open'; } ?>>
                     <summary>Show Bookings</summary>
                     <div class="list">
                         <?php if (!$noBookings) : ?>
@@ -196,4 +203,5 @@
         <?php endif; ?>
 
     </section>
+    <div class="page-spacer"></div> 
 </section>

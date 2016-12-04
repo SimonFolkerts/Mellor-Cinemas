@@ -1,5 +1,13 @@
 <?php
 
+//----------- HEADER OBJECT -----------//
+
+$headerInfo = new HeaderInfo();
+
+$headerInfo->setTitle('Mellor Cinema | Log In');
+$headerInfo->setDescription('Users with a Mellor Cinema account can log in here to buy tickets online.');
+$headerInfo->setKeywords('Mellor, Cinema, movie, ticket, log in, account');
+
 $errors = array();
 $edit = array_key_exists('id', $_GET);
 
@@ -82,9 +90,6 @@ if (isset($_GET['create'])) {
             );
 
             UserMapper::map($user, $data);
-
-//        $errors = UserValidator::validate($user);
-            //TODO ensure unique entries
 
 
             $dao = new UserDao();

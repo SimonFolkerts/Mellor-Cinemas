@@ -1,5 +1,13 @@
 <?php
 
+//----------- HEADER OBJECT -----------//
+
+$headerInfo = new HeaderInfo();
+
+$headerInfo->setTitle('Mellor Cinema | Booking');
+$headerInfo->setDescription('Reserve seats and book tickets for a movie at Mellor Cinema');
+$headerInfo->setKeywords('Mellor, Cinema, movie, ticket, seat, booking, buy, reserve');
+
 //----------SHOWING DETAILS----------
 
 //get the information relevant tot he selected movie
@@ -62,7 +70,7 @@ function generateGrid($seats) {
     while ($row <= $rowCount) {
         foreach ($seats as $seat) {
             if ($seat->getCinemaRow() == $row) {
-                $output = $output . '<input type="checkbox" name="seat[]" value="' . $seat->getId() . '"' . $seat->getStatus() . '>';
+                $output = $output . '<input class="seat-checkbox" type="checkbox" name="seat[]" value="' . $seat->getId() . '"' . $seat->getStatus() . '>';
             }
         }
         $row++;
@@ -109,5 +117,5 @@ if (array_key_exists('seat', $_POST)) {
     $seats = $_POST['seat'];
     $id = (int) $booking->getID();
     $dao->save($id, $seats);
-    header('Location: index.php');    
+    header('Location: index.php?page=booking-confirm&id=' . $booking->getId());    
 }

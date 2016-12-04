@@ -97,11 +97,11 @@ final class Utilities {
     /**
      * Get value of the URL param.
      * @return string parameter value
-     * @throws NotFoundException if the param is not found in the URL
+     * @throws Exception if the param is not found in the URL
      */
     public static function getUrlParam($name) {
         if (!array_key_exists($name, $_GET)) {
-            throw new NotFoundException('URL parameter "' . $name . '" not found.');
+            throw new Exception('URL parameter "' . $name . '" not found.');
         }
         return $_GET[$name];
     }
@@ -109,21 +109,21 @@ final class Utilities {
     /**
      * Get object by the identifier 'id' found in the URL.
      * @return Object
-     * @throws NotFoundException if the param or object is not found
+     * @throws Exception if the param or object is not found
      */
     public static function getObjByGetId($dao) {
         $id = null;
         try {
             $id = self::getUrlParam('id');
         } catch (Exception $ex) {
-            throw new NotFoundException('No TODO identifier provided.');
+            throw new Exception('No TODO identifier provided.');
         }
         if (!is_numeric($id)) {
-            throw new NotFoundException('Invalid TODO identifier provided.');
+            throw new Exception('Invalid TODO identifier provided.');
         }
         $obj = $dao->findById($id);
         if ($obj === null) {
-            throw new NotFoundException('Unknown TODO identifier provided.');
+            throw new Exception('Unknown TODO identifier provided.');
         }
         return $obj;
     }

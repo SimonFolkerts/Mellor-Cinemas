@@ -41,7 +41,7 @@ class MovieDao extends Dao {
     public function findById($id) {
         $row = $this->query("SELECT * FROM movies WHERE id = " . (int) $id)->fetch();
         if (!$row) {
-            throw new NotFoundException('No row returned');
+            throw new Exception('No row returned');
         }
         $movie = new Movie();
         MovieMapper::map($movie, $row);

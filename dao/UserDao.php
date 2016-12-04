@@ -3,7 +3,6 @@
 class UserDao extends Dao {
 
     //---------- DATA RETRIEVEAL ----------//
-
     //return a row based on the supplied information, and map it to an object. If nothing is returned, return null
     public function getUserDetails($username, $password, $db) {
         $statement = $db->query('SELECT id, username, password, status FROM users WHERE username = "' . $username . '" AND password = "' . $password . '" AND status != "deleted"');
@@ -30,7 +29,7 @@ class UserDao extends Dao {
     public function findById($id) {
         $row = $this->query("SELECT * FROM users WHERE id = " . (int) $id . " AND status = 'active'")->fetch();
         if (!$row) {
-            throw new NotFoundException('No row returned');
+            throw new Exception('No row returned');
         }
         $user = new User();
         UserMapper::map($user, $row);
@@ -38,7 +37,6 @@ class UserDao extends Dao {
     }
 
     //----------- CRUD FUNCTIONALITY ----------//
-
     //if the object has no id, insert it into the database, else update pre-existing entry
     public function save(User $user) {
         if ($user->getId() === null) {
