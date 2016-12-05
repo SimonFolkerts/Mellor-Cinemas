@@ -12,24 +12,24 @@ $headerInfo->setKeywords(null);
 $dao = new Dao();
 //MINIFIED SQL: SELECT movies.id, poster, movie_title, movie_synopsis, movies.status, count(showings.id) as showing_count FROM movies LEFT JOIN showings ON showings.movie_id = movies.id AND showings.status != 'deleted' WHERE movies.status != 'deleted' GROUP BY movies.id;
 $moviesSql = ""
-     . "SELECT "
+        . "SELECT "
         . "movies.id, "
         . "poster, "
         . "movie_title, "
         . "movie_synopsis, "
         . "movies.status, "
         . "count(showings.id) as showing_count "
-     . "FROM "
+        . "FROM "
         . "movies "
-     . "LEFT JOIN "
+        . "LEFT JOIN "
         . "showings "
-     . "ON "
+        . "ON "
         . "showings.movie_id = movies.id "
-     . "AND "
+        . "AND "
         . "showings.status != 'deleted' "
-     . "WHERE "
+        . "WHERE "
         . "movies.status != 'deleted' "
-     . "GROUP BY "
+        . "GROUP BY "
         . "movies.id;";
 
 $movieRows = $dao->getRows($moviesSql);
@@ -47,7 +47,7 @@ foreach ($movieRows as $movieRow) {
 if (array_key_exists('movieId', $_POST)) {
     //MINIFIED SQL: SELECT movie_title, showings.id, date, start_time, end_time, cinema, showings.status, count(bookings.id) as bookings FROM movies, showings LEFT JOIN bookings ON showings.id = bookings.showing_id AND bookings.booking_status != 'deleted' WHERE movies.id = showings.movie_id AND movie_id = " . $_POST['movieId'] . " GROUP BY showings.id ORDER BY showings.date DESC, showings.start_time ASC
     $showingsSql = ""
-         . "SELECT "
+            . "SELECT "
             . "movie_title, "
             . "showings.id, "
             . "date, "
@@ -57,22 +57,22 @@ if (array_key_exists('movieId', $_POST)) {
             . "showings.status, "
             . "count(bookings.id) as bookings FROM movies, "
             . "showings "
-         . "LEFT JOIN "
+            . "LEFT JOIN "
             . "bookings ON showings.id = bookings.showing_id "
-         . "AND "
+            . "AND "
             . "bookings.booking_status != 'deleted' "
-         . "WHERE "
+            . "WHERE "
             . "movies.id = showings.movie_id "
-         . "AND "
+            . "AND "
             . "movie_id = " . $_POST['movieId'] . " "
-         . "AND "
+            . "AND "
             . "showings.status != 'deleted' "
-         . "GROUP BY "
+            . "GROUP BY "
             . "showings.id "
-         . "ORDER BY "
-            . "showings.date DESC, "
+            . "ORDER BY "
+            . "showings.date ASC, "
             . "showings.start_time ASC;";
-    
+
     $showingRows = $dao->getRows($showingsSql);
 
     //map the showings to objects and append them to an array
@@ -94,22 +94,24 @@ if (array_key_exists('movieId', $_POST)) {
 //return all users in the database
 //MINIFIED SQL: SELECT users.id, username, password, email, users.status, count(bookings.id) as booking_count FROM users LEFT JOIN bookings ON bookings.user_id = users.id AND bookings.booking_status != 'deleted' GROUP BY users.id";
 $usersSql = ""
-     . "SELECT "
+        . "SELECT "
         . "users.id, "
         . "username, "
         . "password, "
         . "email, "
         . "users.status, "
         . "count(bookings.id) as booking_count "
-     . "FROM "
+        . "FROM "
         . "users "
-     . "LEFT JOIN "
+        . "LEFT JOIN "
         . "bookings "
-     . "ON "
+        . "ON "
         . "bookings.user_id = users.id "
-     . "AND "
+        . "AND "
         . "bookings.booking_status != 'deleted' "
-     . "GROUP BY "
+        . "WHERE "
+        . "users.status != 'deleted' "
+        . "GROUP BY "
         . "users.id";
 $userRows = $dao->getRows($usersSql);
 //map the users to objects and append them to an array
@@ -153,7 +155,8 @@ if (array_key_exists('userId', $_POST)) {
             . "AND "
             . "bookings.id = bookings_seats.booking_id "
             . "AND users.id = " . $_GET['userId'] . " "
-            . "ORDER BY showings.date DESC, showings.start_time ASC;";
+            . "AND bookings.booking_status != 'deleted' "
+            . "ORDER BY showings.date ASC, showings.start_time ASC;";
 
     //nested for loops to display multi-row data
     $bookingRows = $dao->getRows($bookingsSql);
@@ -223,20 +226,18 @@ if (isset($_GET['create-movie'])) {
     //map supplied information to the existing/new object
     if (array_key_exists('save', $_POST)) {
 
-        $data = array(
-            'poster' => $_POST['poster'],
-            'movie_title' => $_POST['movie_title'],
-            'movie_synopsis' => $_POST['synopsis']
-        );
-
-        MovieMapper::map($movie, $data);
-
-//        $errors = UserValidator::validate($user);
-        $errors = [];
-        //TODO ensure unique entries
-        //TODO add functionality for updating existing user
+        $errors = MovieValidator::validateMovie($_POST);
 
         if (empty($errors)) {
+            $data = array(
+                'poster' => $_POST['poster'],
+                'movie_title' => $_POST['movie_title'],
+                'movie_synopsis' => $_POST['synopsis']
+            );
+
+            MovieMapper::map($movie, $data);
+
+
             $dao = new MovieDao();
             $dao->save($movie);
             $movie = $dao->getMovieDetails($movie->getTitle(), $dao->getDb());
@@ -267,22 +268,20 @@ if (isset($_GET['create-showing'])) {
     //map supplied information to the existing/new object
     if (array_key_exists('save', $_POST)) {
 
-        $data = array(
-            'movie_id' => $_POST['movie_id'],
-            'date' => $_POST['date'],
-            'start_time' => $_POST['start'],
-            'end_time' => $_POST['end'],
-            'cinema' => $_POST['cinema']
-        );
+        $errors = ShowingValidator::validateShowing($_POST);
 
-        ShowingMapper::map($showing, $data);
-
-//        $errors = UserValidator::validate($user);
-        $errors = [];
-        //TODO ensure unique entries
-        //TODO add functionality for updating existing user
 
         if (empty($errors)) {
+            $data = array(
+                'movie_id' => $_POST['movie_id'],
+                'date' => $_POST['date'],
+                'start_time' => $_POST['start'],
+                'end_time' => $_POST['end'],
+                'cinema' => $_POST['cinema']
+            );
+
+            ShowingMapper::map($showing, $data);
+
             $dao = new ShowingDao();
             $dao->save($showing);
             header('Location: index.php?page=administrator-interface');

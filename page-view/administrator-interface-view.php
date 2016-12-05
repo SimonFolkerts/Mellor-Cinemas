@@ -50,43 +50,54 @@
                     <div class="list">
                         <?php foreach ($movies as $movie) : ?>
                             <div class="list__listing">
-                                <ul class="list__info-list">
-                                    <li>Title: <?php echo Utilities::escape($movie->getTitle()); ?></li>
-                                    <li>Movie ID: <?php echo Utilities::escape($movie->getId()); ?></li>
-                                    <li>Poster: <?php echo Utilities::escape($movie->getPoster()); ?></li>
-                                    <li>
-                                        <details>
-                                            <summary><?php echo Utilities::escape($movie->getTitle()); ?> Synopsis</summary>
-                                            Synopsis: <?php echo Utilities::escape($movie->getSynopsis()); ?>
-                                        </details>
-                                    </li>
-                                    <li>Active Showings: <?php echo Utilities::escape($movie->getShowings()); ?></li>
-                                    <li>Status: <?php echo Utilities::escape($movie->getStatus()); ?></li>
-                                </ul>
-                                <div class="list__button-box">
-                                    <?php if ($movie->getShowings()) : ?>
-                                        <form class="list__button-form" method="post" action="index.php?page=administrator-interface">
-                                            <button class="button list__button" name="movieId" type="submit" value="<?php echo Utilities::escape($movie->getId()); ?>">Get Showings</button>
-                                        </form>
-                                    <?php endif; ?>
-                                    <form class="list__button-form" method="post" action="index.php?page=administrator-add-edit&type=movie&id=<?php echo Utilities::escape($movie->getId()); ?>">
-                                        <button class="button list__button" type="submit">Edit</button>
-                                    </form>
-                                    <?php if ($movie->getStatus() == 'deleted') : ?>
-                                        <button class="button list__button" type="submit" disabled>Delete</button>
-                                        <p>Movie is deleted!</p>
-                                    <?php elseif ((int) $movie->getShowings() > 0) : ?>
-                                        <button class="button list__button" type="submit" disabled>Delete</button>
-                                        <p>Cannot delete movie with active showings!</p>
-                                    <?php else : ?>
-                                        <form class="list__button-form" method="post" action="index.php?page=administrator-interface&delete-movie=<?php echo Utilities::escape($movie->getId()); ?>">
-                                            <button class="button list__button" type="submit">Delete</button> 
-                                        </form>
-                                    <?php endif; ?>
-                                </div>
+                                <table class="listing-table">
+                                    <tr>
+                                        <td valign="top">
+                                            <ul class="list__info-list">
+                                                <li>Title: <?php echo Utilities::escape($movie->getTitle()); ?></li>
+                                                <li>Movie ID: <?php echo Utilities::escape($movie->getId()); ?></li>
+                                                <li>Poster: <?php echo Utilities::escape($movie->getPoster()); ?></li>
+                                                <li>
+                                                    <details>
+                                                        <summary><?php echo Utilities::escape($movie->getTitle()); ?> Synopsis</summary>
+                                                        Synopsis: <?php echo Utilities::escape($movie->getSynopsis()); ?>
+                                                    </details>
+                                                </li>
+                                                <li>Active Showings: <?php echo Utilities::escape($movie->getShowings()); ?></li>
+                                                <li>Status: <?php echo Utilities::escape($movie->getStatus()); ?></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="bottom">
+                                            <div class="list__button-box">
+
+                                                <?php if ($movie->getShowings()) : ?>
+                                                    <form class="list__button-form" method="post" action="index.php?page=administrator-interface">
+                                                        <button class="button list__button" name="movieId" type="submit" value="<?php echo Utilities::escape($movie->getId()); ?>">Get Showings</button>
+                                                    </form>
+                                                <?php else : ?>
+                                                    <button class="button list__button" type="submit" disabled>Get Showings</button>
+                                                <?php endif; ?>
+                                                <form class="list__button-form" method="post" action="index.php?page=administrator-add-edit&type=movie&id=<?php echo Utilities::escape($movie->getId()); ?>">
+                                                    <button class="button list__button" type="submit">Edit</button>
+                                                </form>
+
+                                                <?php if ((int) $movie->getShowings() > 0) : ?>
+                                                    <button class="button list__button" type="submit" disabled>Delete</button>
+                                                    <p>Cannot delete if movie has showings!</p>
+                                                <?php else : ?>
+                                                    <form class="list__button-form" method="post" action="index.php?page=administrator-interface&delete-movie=<?php echo Utilities::escape($movie->getId()); ?>">
+                                                        <button class="button list__button" type="submit">Delete</button> 
+                                                        <p><br></p>
+                                                    </form>
+                                                <?php endif; ?>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                         <?php endforeach ?>
-
                     </div>
                 </details>
             </section>
@@ -106,39 +117,49 @@
                 ?>>
                     <summary>Show Showings</summary>
                     <?php if (array_key_exists('movieId', $_POST) && !$noShowings) : ?>
-                        <div class="list">
+                        <table class="admin-table">
+                            <tr>
+                                <th>Showing ID</th>
+                                <th>Date</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                <th>Cinema</th>
+                                <th>Active Bookings</th>
+                                <th>Status</th>
+                            </tr>
+
                             <?php foreach ($showings as $showing) : ?>
-                                <div class="list__listing">
-                                    <ul class="list__info-list">
-                                        <li>Movie Title: <?php echo Utilities::escape($title) ?></li>
-                                        <li>Showing ID: <?php echo Utilities::escape($showing->getId()); ?></li>
-                                        <li>Date: <?php echo Utilities::escape($showing->getDate()); ?></li>
-                                        <li>Start Time: <?php echo Utilities::escape($showing->getStartTime()); ?></li>
-                                        <li>End Time: <?php echo Utilities::escape($showing->getEndTime()); ?></li>
-                                        <li>Cinema: <?php echo Utilities::escape($showing->getCinema()); ?></li>
-                                        <li>Active Bookings: <?php echo Utilities::escape($showing->getBookings()); ?></li>
-                                        <li>Status: <?php echo Utilities::escape($showing->getStatus()); ?></li>
-                                    </ul>
-                                    <div class="list__button-box">
+                                <tr>
+                                    <td><?php echo Utilities::escape($showing->getId()); ?></td>
+                                    <td><?php echo Utilities::escape($showing->getDate()); ?></td>
+                                    <td><?php echo Utilities::escape($showing->getStartTime()); ?></td>
+                                    <td><?php echo Utilities::escape($showing->getEndTime()); ?></td>
+                                    <td><?php echo Utilities::escape($showing->getCinema()); ?></td>
+                                    <td><?php echo Utilities::escape($showing->getBookings()); ?></td>
+                                    <td><?php echo Utilities::escape($showing->getStatus()); ?></td>
+                                    <td>
                                         <form class="list__button-form" method="post" action="index.php?page=administrator-add-edit&type=showing&id=<?php echo Utilities::escape($showing->getId()); ?>">
                                             <button class="button list__button" name="title" type="submit" value="<?php echo $title ?>">Edit Showing</button>
                                         </form>
-                                        <?php if ((int) $showing->getBookings() > 0) : ?>
-                                            <form class="list__button-form" method="post" action="index.php?page=administrator-interface&delete-showing=<?php echo Utilities::escape($showing->getId()); ?>">
-                                                <button class="button list__button" type="submit" disabled>Delete</button>
-                                                <p>Cannot delete showing with active bookings!</p>
-                                            </form>
-                                        <?php else : ?>
+                                    </td>
+                                    <?php if ((int) $showing->getBookings() > 0) : ?>
+                                        <td>                                            
+                                            <button class="button list__button" type="submit" disabled>Delete Showing</button>
+                                            <p>Showing has bookings!</p>
+                                        </td>
+                                    <?php else : ?>
+                                        <td>
                                             <form class="list__button-form" method="post" action="index.php?page=administrator-interface&delete-showing=<?php echo Utilities::escape($showing->getId()); ?>">
                                                 <button class="button list__button" type="submit">Delete Showing</button>
                                             </form>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
+                                        </td>
+                                    <?php endif; ?>
+                                </tr>
                             <?php endforeach; ?>
-                        </div>
+                        </table>
                     <?php else : ?>
                         <p>No showings</p>
+
 
                     <?php endif; ?>
                 </details>
@@ -148,32 +169,44 @@
                 <h3>Users</h3>
                 <details>
                     <summary>Show Users</summary>
-                    <div class="list">
+                    <table class="admin-table">
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Email</th>
+                            <th>Active Bookings</th>
+                            <th>Status</th>
+                        </tr>
                         <?php foreach ($users as $user) : ?>
-                            <div class="list__listing">
-                                <ul class="list__info-list">
-                                    <li>ID: <?php echo Utilities::escape($user->getId()); ?></li>
-                                    <li>Username: <?php echo Utilities::escape($user->getUserName()); ?></li>
-                                    <li>Password: <?php echo Utilities::escape($user->getPassword()); ?></li>
-                                    <li>Email: <?php echo Utilities::escape($user->getEmail()); ?></li>
-                                    <li>Active Bookings: <?php echo Utilities::escape($user->getBookingCount()); ?></li>
-                                    <li>Status: <?php echo Utilities::escape($user->getStatus()); ?></li>
-                                </ul>
-                                <div class="list__button-box">
+                            <tr>
+                                <td><?php echo Utilities::escape($user->getId()); ?></td>
+                                <td><?php echo Utilities::escape($user->getUserName()); ?></td>
+                                <td><?php echo Utilities::escape($user->getPassword()); ?></td>
+                                <td><?php echo Utilities::escape($user->getEmail()); ?></td>
+                                <td><?php echo Utilities::escape($user->getBookingCount()); ?></td>
+                                <td><?php echo Utilities::escape($user->getStatus()); ?></td>
+                                <td>
                                     <?php if ($user->getBookingCount()) : ?>
                                         <form class="list__button-form" method="post" action="index.php?page=administrator-interface&userId=<?php echo Utilities::escape($user->getId()); ?>">
                                             <button class="button list__button" name="userId" type="submit" value="<?php echo Utilities::escape($user->getId()); ?>">Get Bookings</button>
                                         </form>
+                                    <?php else : ?>
+                                        <button class="button list__button" type="submit" disabled>Get Bookings</button>
                                     <?php endif; ?>
+                                </td>
+                                <td>
                                     <?php if ($user->getStatus() != 'admin') : ?>
                                         <form class="list__button-form" method="post" action="index.php?page=administrator-interface&delete-user=<?php echo Utilities::escape($user->getId()); ?>">
                                             <button class="button list__button" type="submit" name="delete-user" value="<?php echo Utilities::escape($user->getId()); ?>">Delete User</button>
                                         </form>
+                                    <?php else : ?>
+                                        <p>Admin</p>
                                     <?php endif; ?>
-                                </div>
-                            </div>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
-                    </div>
+                    </table>
                 </details>
             </section>
 
@@ -193,25 +226,35 @@
                         <?php if (!$noBookings) : ?>
                             <?php foreach ($data as $booking) : ?>
                                 <div class="list__listing">
-                                    <ul class="list__info-list">
-                                        <li>ID: <?php echo Utilities::escape($booking['id']); ?></li>
-                                        <li>User: <?php echo Utilities::escape($booking['user']); ?></li>
-                                        <li>Showing: <?php echo Utilities::escape($booking['showing']); ?></li>
-                                        <li>Date: <?php echo Utilities::escape($booking['date']); ?></li>
-                                        <li>Time: <?php echo Utilities::escape($booking['start']); ?> - <?php echo Utilities::escape($booking['end']); ?></li>
-                                        <li>Seat(s) [row, no.]:</li>
-                                        <ul>
-                                            <?php foreach ($booking['seats'] as $seat) : ?>
-                                                <li>[ R: <?php echo Utilities::escape($seat['row']); ?>, N: <?php echo Utilities::escape($seat['seat']); ?> ]<br></li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                        <li>Status: <?php echo Utilities::escape($booking['status']); ?></li>
-                                    </ul>
-                                    <div class="list__button-box">
-                                        <form class="list__button-form" method="post" action="index.php?page=account&admin=true&user-index=<?php echo Utilities::escape($booking['userId']); ?>">
-                                            <button class="button list__button" type="submit" name="delete-booking" value="<?php echo Utilities::escape($booking['id']); ?>">Delete Booking</button>
-                                        </form>
-                                    </div>
+                                    <table class="listing-table">
+                                        <tr>
+                                            <td valign="top">
+                                                <ul class="list__info-list">
+                                                    <li>ID: <?php echo Utilities::escape($booking['id']); ?></li>
+                                                    <li>User: <?php echo Utilities::escape($booking['user']); ?></li>
+                                                    <li>Showing: <?php echo Utilities::escape($booking['showing']); ?></li>
+                                                    <li>Date: <?php echo Utilities::escape($booking['date']); ?></li>
+                                                    <li>Time: <?php echo Utilities::escape($booking['start']); ?> - <?php echo Utilities::escape($booking['end']); ?></li>
+                                                    <li>Seat(s) [row, no.]:</li>
+                                                    <ul>
+                                                        <?php foreach ($booking['seats'] as $seat) : ?>
+                                                            <li>[ R: <?php echo Utilities::escape($seat['row']); ?>, N: <?php echo Utilities::escape($seat['seat']); ?> ]<br></li>
+                                                        <?php endforeach; ?>
+                                                    </ul>
+                                                    <li>Status: <?php echo Utilities::escape($booking['status']); ?></li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="bottom">
+                                                <div class="list__button-box">
+                                                    <form class="list__button-form" method="post" action="index.php?page=account&admin=true&user-index=<?php echo Utilities::escape($booking['userId']); ?>">
+                                                        <button class="button list__button" type="submit" name="delete-booking" value="<?php echo Utilities::escape($booking['id']); ?>">Delete Booking</button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
                             <?php endforeach; ?>
                         </div>

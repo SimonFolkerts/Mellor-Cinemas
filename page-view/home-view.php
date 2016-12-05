@@ -26,6 +26,7 @@
         <?php if ($showings) : ?>
             <section class="showing-display">
                 <h3 class="showing-title">Dates and Times for <span class="movie-title"><?php echo Utilities::escape($movieTitle); ?></span></h3>
+                <p class="showing-title__p">Please select a time below to make a booking</p>
                 <table class="showings">
                     <tr>
                         <th>Date</th>

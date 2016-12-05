@@ -84,8 +84,8 @@ class MovieDao extends Dao {
         var_dump($id);
 
         $sql = '
-            UPDATE movies LEFT JOIN showings ON movies.id = showings.movie_id SET
-                movies.status = :status, showings.status = :status
+            UPDATE movies 
+            SET movies.status = :status
             WHERE
                 movies.id = :id';
         $statement = $this->getDb()->prepare($sql);

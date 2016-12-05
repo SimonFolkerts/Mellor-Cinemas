@@ -70,14 +70,15 @@ class UserDao extends Dao {
     //set the status of the database entry to 'deleted' using a prepared statement, as well as the bookings and junctions associated with the entry
     public function delete($id) {
         $sql = '
-            UPDATE users bookings, 
-                bookings_seats 
+            UPDATE users 
+                LEFT JOIN bookings ON bookings.user_id = users.id 
+                LEFT JOIN bookings_seats ON bookings_seats.booking_id = bookings.id
             SET
                 bookings.booking_status = :status,
                 bookings_seats.status = :status,
                 users.status = :status
             WHERE
-                users.id = :id AND bookings.id = users.id AND bookings_seats.booking_id = bookings.id';
+                users.id = :id';
         $statement = $this->getDb()->prepare($sql);
         $this->executeStatement($statement, array(
             ':status' => 'deleted',

@@ -87,6 +87,7 @@ html {
 body {
     background-image: url("../img/deco-tile.jpg");
     height: 100%;
+    min-width: 1000px;
 }
 
 .page-container {
@@ -96,6 +97,7 @@ body {
     margin: auto;
     min-height: 100%;
     margin-bottom: -396px;
+    min-width: 1000px;
     max-width: 1920px;
     font-family: Oswald, serif;
     color: #FFA800;
@@ -278,10 +280,14 @@ body {
 }
 
 .showing-title {
+    padding-bottom: 20px;
     text-align: center;
-    padding-bottom: 30px;
     margin: 25px 0 0 30px;
     font-size: 30px;
+}
+
+.showing-title__p {
+    text-align: center;
 }
 
 .movie-title {
@@ -476,6 +482,10 @@ body {
     padding: 5px;
 }
 
+.listing-table {
+    height: 100%;
+}
+
 .list__button-form {
     display: inline;
 }
@@ -506,6 +516,12 @@ summary {
 
 .edit-showing {
     width: 350px;
+}
+
+.admin-table {
+    text-align: center;
+    width: 100%;
+    min-width: 890px;
 }
 
 /*---------- FOOTER -----------*/
