@@ -81,11 +81,13 @@ class MovieDao extends Dao {
     
        //set the status of the database entry to 'deleted' using a prepared statement, as well as its joined showings
     public function delete($id) {
+        var_dump($id);
+
         $sql = '
-            UPDATE movies, showings SET
+            UPDATE movies LEFT JOIN showings ON movies.id = showings.movie_id SET
                 movies.status = :status, showings.status = :status
             WHERE
-                movies.id = :id AND movies.id = showings.movie_id';
+                movies.id = :id';
         $statement = $this->getDb()->prepare($sql);
         $this->executeStatement($statement, array(
             ':status' => 'deleted',
