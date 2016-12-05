@@ -21,3 +21,10 @@ password: admin
 
 Here the admin can pull up lists of movies and users. The admin can choose to show all showings for a given movie, or show all bookings for a given user.
 Movies and showings can be edited or deleted (providing no active dependents), and users and bookings can be deleted.
+
+IMPORTANT
+
+1: No interface exists for the creation of cinemas/seats. Currently only one cinema (cinema 1) exists, to which all extant seats are assigned. Entering any other 
+cinema number will result in no seats being available for booking.
+
+2: DO NOT delete admin user. It is necessary for all administrator functions.

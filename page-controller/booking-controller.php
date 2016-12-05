@@ -42,6 +42,8 @@ $reservedSeatsSql = "SELECT seats.id, cinema_row, cinema_column FROM seats, book
 $allSeats = $dao->findAll($allSeatsSql);
 $reservedSeats = $dao->findAll($reservedSeatsSql);
 
+if ($allSeats) {
+
 //if non available seats exist, set the status of them to disabled (for use in their html for greying out)
 if ($reservedSeats) {
     foreach ($allSeats as $seat) {
@@ -118,4 +120,5 @@ if (array_key_exists('seat', $_POST)) {
     $id = (int) $booking->getID();
     $dao->save($id, $seats);
     header('Location: index.php?page=booking-confirm&id=' . $booking->getId());    
+}
 }
