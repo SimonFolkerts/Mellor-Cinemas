@@ -4,8 +4,8 @@
             <?php foreach ($movies as $movie): ?>
                 <li>
                     <div class="carousel-item">
-                        <div class="carousel-item__caption"><p><?php echo $movie->getTitle(); ?></p></div>
-                        <a href="index.php?page=home&id=<?php echo $movie->getId(); ?>"><img class="carousel-item__movie-thumb" title="<?php echo $movie->getTitle(); ?>" src="../web/img/image-uploads/<?php echo $movie->getPoster(); ?>"/></a>
+                        <div class="carousel-item__caption"><p><?php echo Utilities::escape($movie->getTitle()); ?></p></div>
+                        <a href="index.php?page=home&id=<?php echo Utilities::escape($movie->getId()); ?>"><img class="carousel-item__movie-thumb" title="<?php echo Utilities::escape($movie->getTitle()); ?>" src="../web/img/image-uploads/<?php echo Utilities::escape($movie->getPoster()); ?>"/></a>
                     </div>
                 </li>
             <?php endforeach ?>
@@ -16,40 +16,40 @@
     <?php if (array_key_exists('id', $_GET)) : ?>
         <div class="movie">
             <div class="movie__poster-container">
-                <img class="movie__poster" src="../web/img/image-uploads/<?php echo $moviePoster ?>">
+                <img class="movie__poster" src="../web/img/image-uploads/<?php echo Utilities::escape($moviePoster); ?>">
             </div>
             <div class="movie__text-container">
-                <h2 class="movie__title"><?php echo $movieTitle ?></h2>
-                <p class="movie__synopsis"><?php echo $movieSynopsis ?></p>
+                <h2 class="movie__title"><?php echo Utilities::escape($movieTitle); ?></h2>
+                <p class="movie__synopsis"><?php echo Utilities::escape($movieSynopsis); ?></p>
             </div>
         </div>
         <?php if ($showings) : ?>
             <section class="showing-display">
-                <h3 class="showing-title">Dates and Times for <span class="movie-title"><?php echo $movieTitle ?></span></h3>
+                <h3 class="showing-title">Dates and Times for <span class="movie-title"><?php echo Utilities::escape($movieTitle); ?></span></h3>
                 <table class="showings">
                     <tr>
                         <th>Date</th>
                         <th>Showings</th>
                     </tr>
                     <tr class="spacer-row"></tr>
-                    <?php foreach ($showingString as $showing): ?>
+                    <?php foreach ($showingString as $date): ?>
                         <tr>
                             <?php if (empty($_SESSION['username'])) : ?>
                                 <td class="no-border">
-                                    <p class="showing__date"><?php echo $showing['date']; ?></p>
+                                    <p class="showing__date"><?php echo Utilities::escape($date['date']); ?></p>
                                 </td>
-                                <?php foreach ($showing['times'] as $time) : ?>
+                                <?php foreach ($date['times'] as $showing) : ?>
                                     <td>
-                                        <a class="showing__time" href="index.php?page=login&id=<?php echo $showing['id']; ?>"><?php echo $time['start']; ?> - <?php echo $time['end']; ?></a>
+                                        <a class="showing__time" href="index.php?page=login&id=<?php echo Utilities::escape($showing['id']); ?>"><?php echo Utilities::escape($showing['start']); ?> - <?php echo Utilities::escape($showing['end']); ?></a>
                                     </td>
                                 <?php endforeach; ?>
                             <?php else : ?>
                                 <td class="no-border">
-                                    <p class="showing__date"><?php echo $showing['date']; ?></p>
+                                    <p class="showing__date"><?php echo Utilities::escape($date['date']); ?></p>
                                 </td>
-                                <?php foreach ($showing['times'] as $time) : ?>
+                                <?php foreach ($date['times'] as $showing) : ?>
                                     <td>
-                                        <a class="showing__time" href="index.php?page=booking&id=<?php echo $showing['id']; ?>"><?php echo $time['start']; ?> - <?php echo $time['end']; ?></a>
+                                        <a class="showing__time" href="index.php?page=booking&id=<?php echo Utilities::escape($showing['id']); ?>"><?php echo Utilities::escape($showing['start']); ?> - <?php echo Utilities::escape($showing['end']); ?></a>
                                     </td>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -58,7 +58,7 @@
                     <?php endforeach ?>
                 </table>
             <?php else : ?>
-                <h3 class="showing-title">No Showings for <span class="movie-title"><?php echo $movieTitle ?></span></h3>
+                <h3 class="showing-title">No Showings for <span class="movie-title"><?php echo Utilities::escape($movieTitle); ?></span></h3>
             <?php endif ?>
         </section>
 

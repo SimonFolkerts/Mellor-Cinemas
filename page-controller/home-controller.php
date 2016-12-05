@@ -47,12 +47,12 @@ if (array_key_exists('id', $_GET)) {
             if ($lastDate != $newDate) {
                 $i++;
                 $showingString[$i] = array(
-                    'id' => $showing->getId(),
                     'date' => $showing->getDate(),
                     'times' => []
                 );
             }
             $showingString[$i]['times'][] = array(
+                'id' => $showing->getId(),
                 'start' => $showing->getStartTime(),
                 'end' => $showing->getEndTime()
             );

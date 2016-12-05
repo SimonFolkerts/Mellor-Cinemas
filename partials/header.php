@@ -2,8 +2,8 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title><?php echo $headerInfo->getTitle(); ?></title>
-        <meta name="description" content=<?php echo '"' . $headerInfo->getDescription() . '"'; ?>>
+        <title><?php echo Utilities::escape($headerInfo->getTitle()); ?></title>
+        <meta name="description" content=<?php echo Utilities::escape('"' . $headerInfo->getDescription() . '"'); ?>>
         <link rel="stylesheet" type="text/css" href="../web/css/main.css">
         <link href="https://fonts.googleapis.com/css?family=Limelight|Oswald:light" rel="stylesheet">
     </head>
@@ -19,7 +19,7 @@
             <div id="navbox-outer">
                 <div id="navbox-inner">
                     <?php if (isset($_SESSION['username'])) { ?>
-                        <p class="user-greeting">Hello <?php echo $_SESSION['username'] ?></p>
+                        <p class="user-greeting">Hello <?php echo Utilities::escape($_SESSION['username']); ?></p>
                     <?php } ?>
                     <ul id="nav-list">
                         <li><a href="http://localhost/MellorCinemas/web/index.php?page=home">Movies</a></li>

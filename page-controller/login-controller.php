@@ -25,8 +25,8 @@ if (isset($_POST['submit'])) {
     $dao = new UserDao();
     $db = $dao->getDb();
 
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = $_POST['login-username'];
+    $password = $_POST['login-password'];
 
     $errors = UserCredentialsValidator::validateLogin($username, $password);
 
@@ -74,9 +74,9 @@ if (isset($_GET['create'])) {
 
     if (array_key_exists('save', $_POST)) {
 
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $email = $_POST['email'];
+        $username = $_POST['create-username'];
+        $password = $_POST['create-password'];
+        $email = $_POST['create-email'];
 
         $errors = UserCredentialsValidator::validateAll($username, $password, $email);
 
@@ -84,9 +84,9 @@ if (isset($_GET['create'])) {
 
             //add supplied information to the object
             $data = array(
-                'username' => $_POST['username'],
-                'password' => $_POST['password'],
-                'email' => $_POST['email']
+                'username' => $username,
+                'password' => $password,
+                'email' => $email
             );
 
             UserMapper::map($user, $data);

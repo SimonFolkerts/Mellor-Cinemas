@@ -65,6 +65,8 @@ if (array_key_exists('movieId', $_POST)) {
             . "movies.id = showings.movie_id "
          . "AND "
             . "movie_id = " . $_POST['movieId'] . " "
+         . "AND "
+            . "showings.status != 'deleted' "
          . "GROUP BY "
             . "showings.id "
          . "ORDER BY "
@@ -291,17 +293,17 @@ if (isset($_GET['create-showing'])) {
 if (array_key_exists('delete-movie', $_GET)) {
     $dao = new MovieDao();
     $dao->delete($_GET['delete-movie']);
-    header('Location: index.php?administrator-interface');
+    header('Location: index.php?page=administrator-interface');
 }
 
 if (array_key_exists('delete-showing', $_GET)) {
     $dao = new ShowingDao();
     $dao->delete($_GET['delete-showing']);
-    header('Location: index.php?administrator-interface');
+    header('Location: index.php?page=administrator-interface');
 }
 
 if (array_key_exists('delete-user', $_GET)) {
     $dao = new UserDao();
     $dao->delete($_GET['delete-user']);
-    header('Location: index.php?administrator-interface');
+    header('Location: index.php?page=administrator-interface');
 }
