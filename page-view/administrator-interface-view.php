@@ -269,5 +269,4 @@
         <?php endif; ?>
 
     </section>
-    <div class="page-spacer"></div> 
 </section>

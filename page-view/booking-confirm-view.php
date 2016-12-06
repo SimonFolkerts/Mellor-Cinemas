@@ -20,5 +20,4 @@
         </div>
     <?php endforeach; ?>
     </section>
-    <div class="page-spacer"></div>
 </section>

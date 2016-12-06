@@ -73,5 +73,4 @@
             </div>
         </section>
     <?php endif; ?>
-    <div class="page-spacer"></div> 
 </section>

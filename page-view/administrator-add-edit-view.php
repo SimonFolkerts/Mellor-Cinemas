@@ -52,5 +52,4 @@
         <?php endif; ?>
     <br>
     </div>
-    <div class='page-spacer'></div>
 </section>

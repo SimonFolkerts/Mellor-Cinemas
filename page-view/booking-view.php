@@ -24,5 +24,4 @@
             <h3>ERROR: Cinema has no seats</h3>
         <?php endif; ?>
     </section>
-    <div class='page-spacer'></div>
 </section>

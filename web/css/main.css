@@ -21,6 +21,7 @@ html {
 #navbar {
     background-color: black;
     color: #FFA800;
+    position: relative;
 }
 
 #header-bar {
@@ -96,15 +97,23 @@ body {
     width: 80%;
     margin: auto;
     min-height: 100%;
-    margin-bottom: -396px;
-    min-width: 1000px;
+    margin-bottom: -201px;
+    margin-top: -191px;
     max-width: 1920px;
     font-family: Oswald, serif;
     color: #FFA800;
 }
 
-.page-spacer {
-    height: 396px;
+.page-container:before {
+    content: "";
+    display: block;
+    height: 201px;
+}
+
+.page-container:after {
+    content: "";
+    display: block;
+    height: 201px;
 }
 /*---------- HOME ----------*/
 

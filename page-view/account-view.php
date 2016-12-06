@@ -43,5 +43,4 @@
             <p>No bookings to display.</p>
         <?php endif ?>
     </div>
-    <div class="page-spacer"></div>
 </section>
